@@ -1,0 +1,17 @@
+{
+    "format_version": 1,
+    "header": {
+      "description": "§7Finnally The Free & Best Animation Pack",
+        "name": "§b§lOrigin Animations",
+        "uuid": "56fc8d14-6c64-4a04-8d8f-373b44a92b03",
+        "version": [1, 0, 0]
+    },
+    "modules": [
+        {
+            "description": "授权使用加QQ:241127915",
+            "type": "resources",
+            "uuid": "f251e2e4-64eb-4d27-858d-3958121924d2",
+            "version": [1, 0, 0]
+        }
+    ]
+}
