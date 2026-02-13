@@ -1,0 +1,62 @@
+{
+	"format_version": "1.10.0",
+	"minecraft:client_entity": {
+		"description": {
+			"identifier": "minecraft:allay",
+			"materials": {
+				"default": "allay"
+			},
+			"textures": {
+				"default": "textures/entity/allay/allay"
+			},
+			"geometry": {
+				"default": "geometry.allay"
+			},
+			"scripts": {
+				"scale": "q.life_time < 0.2 ? q.life_time * 5 : 1",
+				"pre_animation": [
+					"variable.holding_trident = query.is_item_name_any('slot.weapon.mainhand', 'minecraft:trident');"
+        ],
+        "animate": [
+          "root",
+          "holding",
+          { "look_at_target": "query.is_alive" },
+          { "dead": "!query.is_alive" }
+        ],
+        "initialize": [
+          "v.roll = math.random_integer(1, 5);"
+        ]
+			},
+			"animations": {
+        "root": "controller.animation.allay.root",
+        "holding": "controller.animation.allay.holding",
+        "base_pose": "animation.allay.base_pose",
+        "look_at_target": "animation.common.look_at_target",
+        "idle1": "animation.allay.idle1",
+        "idle2": "animation.allay.idle2",
+        "idle3": "animation.allay.idle3",
+				"move": "animation.allay.fly",
+        "hold_item": "animation.allay.hold_item",
+        "dead": "animation.custom_death",
+        "dead1": "animation.allay.dead1",
+        "dead2": "animation.allay.dead2",
+        "dead3": "animation.allay.dead3"
+			},
+			"render_controllers": [
+				"controller.render.allay"
+      ],
+      "particle_effects": {
+        "death_smoke1a": "coptaine:allay_death_smoke1a",
+        "death_smoke1b": "coptaine:allay_death_smoke1b",
+        "death_smoke2": "coptaine:allay_death_smoke2",
+        "death_smoke3": "coptaine:allay_death_smoke3",
+        "throw_sparks": "coptaine:allay_throw_sparks"
+      },
+			"enable_attachables": true,
+			"spawn_egg": {
+				"base_color": "#00daff",
+				"overlay_color": "#00adff"
+			}
+		}
+	}
+}

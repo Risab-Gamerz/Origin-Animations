@@ -1,0 +1,64 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "minecraft:creeper",
+      "min_engine_version": "1.8.0",
+      "materials": {
+        "default": "creeper",
+        "charged": "charged_creeper"
+      },
+      "textures": {
+        "default": "textures/entity/creeper/creeper",
+        "charged": "textures/entity/creeper/creeper_armor"
+      },
+      "geometry": {
+        "default": "geometry.creeper.v1.8",
+        "charged": "geometry.creeper.charged.v1.8"
+      },
+      "scripts": {
+        "scale": "q.life_time < 0.2 ? q.life_time * 5 : 1",
+        "pre_animation": [
+          "variable.wobble = Math.sin(query.swell_amount * 5730) * query.swell_amount * 0.01 + 1.0;",
+          "variable.swelling_scale1 = (Math.pow(Math.clamp(query.swell_amount, 0.0, 1.0), 4.0) * 0.4 + 1.0) * variable.wobble;",
+          "variable.swelling_scale2 = (Math.pow(Math.clamp(query.swell_amount, 0.0, 1.0), 4.0) * 0.1 + 1.0) / variable.wobble;",
+          "variable.flash = Math.mod(Math.Round(query.swell_amount * 10.0), 2.0);",
+          "variable.tcos0 = (Math.cos(query.modified_distance_moved * 38.17) * query.modified_move_speed) * 57.3;",
+          "variable.tcos1 = (Math.cos(query.modified_distance_moved * 76.34) * query.modified_move_speed) * 57.3;"
+        ],
+        "animate": [
+          "root",
+          "swelling",
+          { "look_at_target": "query.is_alive" },
+          { "dead": "!query.is_alive" }
+        ],
+        "initialize": [
+          "v.roll = math.random_integer(1, 5);"
+        ]
+      },
+      "animations": {
+        "swelling": "controller.animation.creeper.swelling",
+        "root": "controller.animation.creeper.root",
+        "look_at_target": "animation.common.look_at_target",
+        "base_pose": "animation.creeper.base_pose",
+        "base_pose_sus": "animation.creeper.base_pose_sus",
+        "idle1": "animation.creeper.idle1",
+        "idle2": "animation.creeper.idle2",
+        "idle3": "animation.creeper.idle3",
+        "move_upper_body": "animation.creeper.move_upper_body",
+        "move_lower_body": "animation.creeper.move_lower_body",
+        "exploding": "animation.creeper.exploding",
+        "dead": "animation.custom_death",
+        "dead1": "animation.creeper.dead1",
+        "dead2": "animation.creeper.dead2",
+        "dead3": "animation.creeper.dead3",
+        "creeper_swelling": "animation.creeper.swelling"
+      },
+      "render_controllers": [ "controller.render.creeper", "controller.render.creeper_armor" ],
+      "spawn_egg": {
+        "texture": "spawn_egg",
+        "texture_index": 6
+      }
+    }
+  }
+}

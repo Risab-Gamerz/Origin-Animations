@@ -1,0 +1,107 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "minecraft:villager_v2",
+      "materials": {
+        "default": "villager_v2",
+        "masked": "villager_v2_masked"
+      },
+      "geometry": {
+        "default": "geometry.villager_v2"
+      },
+      "textures": {
+        // Base Textures - Vanilla Minecraft only has one such texture, rename these for resource packs desiring variety
+        "base": "textures/entity/villager2/villager",
+        "base2": "textures/entity/villager2/villager",
+        "base3": "textures/entity/villager2/villager",
+        "base4": "textures/entity/villager2/villager",
+        "base5": "textures/entity/villager2/villager",
+        "base6": "textures/entity/villager2/villager",
+
+        // Biome Layer
+        "desert": "textures/entity/villager2/biomes/biome_desert",
+        "jungle": "textures/entity/villager2/biomes/biome_jungle",
+        "plains": "textures/entity/villager2/biomes/biome_plains",
+        "savanna": "textures/entity/villager2/biomes/biome_savanna",
+        "snow": "textures/entity/villager2/biomes/biome_snow",
+        "swamp": "textures/entity/villager2/biomes/biome_swamp",
+        "taiga": "textures/entity/villager2/biomes/biome_taiga",
+
+        // Profession Layer
+        "armorer": "textures/entity/villager2/professions/armorer",
+        "butcher": "textures/entity/villager2/professions/butcher",
+        "cartographer": "textures/entity/villager2/professions/cartographer",
+        "cleric": "textures/entity/villager2/professions/cleric",
+        "farmer": "textures/entity/villager2/professions/farmer",
+        "fisherman": "textures/entity/villager2/professions/fisherman",
+        "fletcher": "textures/entity/villager2/professions/fletcher",
+        "leatherworker": "textures/entity/villager2/professions/leatherworker",
+        "librarian": "textures/entity/villager2/professions/librarian",
+        "shepherd": "textures/entity/villager2/professions/shepherd",
+        "tool_smith": "textures/entity/villager2/professions/toolsmith",
+        "weapon_smith": "textures/entity/villager2/professions/weaponsmith",
+        "stonemason": "textures/entity/villager2/professions/stonemason",
+        "nitwit": "textures/entity/villager2/professions/nitwit",
+        "unskilled": "textures/entity/villager2/professions/unskilled",
+
+        // Levels Layer
+        "level_stone": "textures/entity/villager2/levels/level_stone",
+        "level_iron": "textures/entity/villager2/levels/level_iron",
+        "level_gold": "textures/entity/villager2/levels/level_gold",
+        "level_emerald": "textures/entity/villager2/levels/level_emerald",
+        "level_diamond": "textures/entity/villager2/levels/level_diamond"
+      },
+      "scripts": {
+        "scale": "q.life_time < 0.2 ? q.life_time * 5 : 0.9375",
+        "pre_animation": [
+          "variable.num_professions = 15;",
+          "variable.num_tiers = 3;",
+          "variable.profession_index = (query.variant < variable.num_professions ? query.variant : 0);",
+          "variable.level_index = query.trade_tier;",
+          "variable.tcos0 = (Math.cos(query.modified_distance_moved * 25.44666) * query.modified_move_speed) * 57.3;",
+          "variable.tcos1 = (Math.cos(query.modified_distance_moved * 50.89333) * query.modified_move_speed) * 57.3;"
+        ],
+        "animate": [
+          "root",
+          { "look_at_target": "query.is_alive && !q.is_sleeping" },
+          { "villager_big_head": "query.is_baby" },
+          { "dead": "!query.is_alive" }
+        ],
+        "initialize": [
+          "v.roll = math.random_integer(1, 5);"
+        ]
+      },
+      "animations": {
+        "root": "controller.animation.villager.root",
+        "look_at_target": "animation.common.look_at_target",
+        "villager_big_head": "animation.villager.baby_transform",
+        "sleep": "animation.villager.sleep",
+        "base_pose": "animation.villager.base_pose",
+        "base_pose_sus": "animation.villager.base_pose_sus",
+        "hold_item": "animation.villager.holding_item",
+        "idle1": "animation.villager.idle1",
+        "idle2": "animation.villager.idle2",
+        "idle3": "animation.villager.idle3",
+        "idle4": "animation.villager.idle4",
+        "move_upper_body": "animation.villager.move_upper_body",
+        "move_lower_body": "animation.villager.move_lower_body",
+        "panic": "animation.villager.panic",
+        "dead": "animation.custom_death",
+        "dead1": "animation.villager.dead1",
+        "dead2": "animation.villager.dead2",
+        "dead3": "animation.villager.dead3",
+        "dead4": "animation.villager.dead4"
+      },
+      "render_controllers": [
+        "controller.render.villager_v2_base",
+        "controller.render.villager_v2_masked",
+        "controller.render.villager_v2_level"
+      ],
+      "spawn_egg": {
+        "texture": "spawn_egg",
+        "texture_index": 14
+      }
+    }
+  }
+}

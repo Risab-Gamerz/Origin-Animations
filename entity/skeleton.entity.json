@@ -1,0 +1,73 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "minecraft:skeleton",
+      "min_engine_version": "1.8.0",
+      "materials": {
+        "default": "skeleton"
+      },
+      "geometry": {
+        "default": "geometry.skeleton.v1.8",
+        "dead": "geometry.skeleton.dead.v1.8"
+      },
+      "textures": {
+        "default": "textures/entity/skeleton/skeleton"
+      },
+      "scripts": {
+        "scale": "q.life_time < 0.2 ? q.life_time * 5 : 1",
+        "pre_animation": [
+          "variable.tcos0 = (Math.cos(query.modified_distance_moved * 38.17) * query.modified_move_speed) * 57.3;",
+          "variable.tcos1 = (Math.cos(query.modified_distance_moved * 76.34) * query.modified_move_speed) * 57.3;"
+        ],
+        "animate": [
+          { "root": "v.fall == 0" },
+          "attack",
+          "fall",
+          { "look_at_target": "query.is_alive && v.fall == 0" },
+          { "dead": "!query.is_alive" }
+        ],
+        "initialize": [
+          "v.roll = math.random_integer(1, 5);",
+          "v.attack_roll = 0;",
+          "v.fall = 0;",
+          "v.x = 0;",
+          "v.y = 0;"
+        ]
+      },
+      "animations": {
+        "root": "controller.animation.skeleton.root",
+        "attack": "controller.animation.skeleton.attack",
+        "fall": "controller.animation.mob.fall",
+        "falling_low": "animation.skeleton.falling_low",
+        "falling_trans": "animation.skeleton.falling_trans",
+        "falling_high": "animation.skeleton.falling_high",
+        "land_high": "animation.skeleton.land_high",
+        "land_low": "animation.skeleton.land_low",
+        "look_at_target": "animation.common.look_at_target",
+        "base_pose": "animation.skeleton.base_pose",
+        "riding.legs": "animation.humanoid.riding.legs",
+        "idle1": "animation.skeleton.idle1",
+        "idle2": "animation.skeleton.idle2",
+        "idle3": "animation.skeleton.idle3",
+        "move_upper_body": "animation.skeleton.move_upper_body",
+        "move_lower_body": "animation.skeleton.move_lower_body",
+        "hold_bow": "animation.skeleton.hold_bow",
+        "charge_bow": "animation.skeleton.charge_bow",
+        "attack1": "animation.wither_skeleton.attack1",
+        "attack2": "animation.wither_skeleton.attack2",
+        "attack3": "animation.wither_skeleton.attack3",
+        "dead": "animation.custom_death",
+        "dead1": "animation.skeleton.dead1",
+        "dead2": "animation.skeleton.dead2",
+        "dead3": "animation.skeleton.dead3"
+      },
+      "render_controllers": [ "controller.render.skeleton" ],
+      "spawn_egg": {
+        "texture": "spawn_egg",
+        "texture_index": 9
+      },
+      "enable_attachables": true
+    }
+  }
+}

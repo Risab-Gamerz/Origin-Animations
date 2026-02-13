@@ -1,0 +1,56 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "minecraft:cow",
+      "min_engine_version": "1.8.0",
+      "materials": { "default": "cow" },
+      "textures": {
+        "default": "textures/entity/cow/cow"
+      },
+      "geometry": {
+        "default": "geometry.cow"
+      },
+      "scripts": {
+        "scale": "q.life_time < 0.2 ? q.life_time * 5 : 1",
+        "pre_animation": [
+          "variable.tcos0 = (Math.cos(query.modified_distance_moved * 38.17) * query.modified_move_speed) * 57.3;",
+          "variable.tcos1 = (Math.cos(query.modified_distance_moved * 76.34) * query.modified_move_speed) * 57.3;"
+        ],
+        "animate": [
+          "root",
+          { "look_at_target": "query.is_alive" },
+          { "cow_big_head": "query.is_baby" },
+          { "dead": "!query.is_alive" }
+        ],
+        "initialize": [
+          "v.roll = math.random_integer(1, 5);"
+        ]
+      },
+      "animations": {
+        "root": "controller.animation.common_animal.root",
+        "cow_baby_big_head": "controller.animation.cow.baby_big_head",
+        "look_at_target": "animation.cow.look_at_target",
+        "cow_big_head": "animation.cow.baby_transform",
+        "base_pose": "animation.cow.base_pose",
+        "base_pose_sus": "animation.cow.base_pose_sus",
+        "idle1": "animation.cow.idle1",
+        "idle2": "animation.cow.idle2",
+        "idle3": "animation.cow.idle3",
+        "move_upper_body": "animation.cow.move_upper_body",
+        "move_lower_body": "animation.cow.move_lower_body",
+        "panic": "animation.cow.panic",
+        "dead": "animation.custom_death",
+        "dead1": "animation.cow.dead1",
+        "dead2": "animation.cow.dead2",
+        "dead3": "animation.cow.dead1",
+        "dead4": "animation.cow.dead2"
+      },
+      "render_controllers": [ "controller.render.cow" ],
+      "spawn_egg": {
+        "texture": "spawn_egg",
+        "texture_index": 1
+      }
+    }
+  }
+}

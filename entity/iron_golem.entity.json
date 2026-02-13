@@ -1,0 +1,67 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "minecraft:iron_golem",
+      "geometry": {
+        "default": "geometry.irongolem",
+        "dead": "geometry.irongolem.dead"
+      },
+      "textures": {
+        "cracked_high": "textures/entity/iron_golem/cracked_high",
+        "cracked_med": "textures/entity/iron_golem/cracked_medium",
+        "cracked_low": "textures/entity/iron_golem/cracked_low",
+        "cracked_none": "textures/entity/iron_golem/cracked_none"
+      },
+      "scripts": {
+        "scale": "q.life_time < 0.2 ? q.life_time * 5 : 1",
+        "pre_animation": [
+          "variable.tcos0 = (Math.cos(query.modified_distance_moved * 38.17) * query.modified_move_speed) * 57.3;",
+          "variable.tcos1 = (Math.cos(query.modified_distance_moved * 76.34) * query.modified_move_speed) * 57.3;"
+        ],
+        "animate": [
+          { "root": "v.fall == 0" },
+          { "look_at_target": "query.is_alive && v.fall == 0" },
+          "fall",
+          { "dead": "!query.is_alive" }
+        ],
+        "initialize": [
+          "v.roll = math.random_integer(1, 5);",
+          "v.fall = 0;"
+        ]
+      },
+      "animations": {
+        "root": "controller.animation.iron_golem.root",
+        "look_at_target": "animation.common.look_at_target",
+        "base_pose": "animation.iron_golem.base_pose",
+        "base_pose_sus": "animation.iron_golem.base_pose_sus",
+        "fall": "controller.animation.mob.fall",
+        "falling_low": "animation.iron_golem.falling_low",
+        "falling_trans": "animation.iron_golem.falling_trans",
+        "falling_high": "animation.iron_golem.falling_high",
+        "land_high": "animation.iron_golem.land_high",
+        "land_low": "animation.iron_golem.land_low",
+        "idle1": "animation.iron_golem.idle1",
+        "idle2": "animation.iron_golem.idle2",
+        "idle3": "animation.iron_golem.idle3",
+        "idle4": "animation.iron_golem.idle4",
+        "move_upper_body": "animation.iron_golem.move_upper_body",
+        "move_lower_body": "animation.iron_golem.move_lower_body",
+        "attack1": "animation.iron_golem.attack1",
+        "attack2": "animation.iron_golem.attack2",
+        "attack3": "animation.iron_golem.attack3",
+        "offer_flower": "animation.iron_golem.offer_flower",
+        "dead": "animation.custom_death",
+        "dead1": "animation.iron_golem.dead1",
+        "dead2": "animation.iron_golem.dead2",
+        "dead3": "animation.iron_golem.dead3",
+        "dead4": "animation.iron_golem.dead4"
+      },
+      "render_controllers": [
+        { "controller.render.iron_golem": "q.is_alive" },
+        { "controller.render.iron_golem_cracks": "q.is_alive" },
+        { "controller.render.iron_golem.dead": "!q.is_alive" }
+      ]
+    }
+  }
+}

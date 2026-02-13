@@ -1,0 +1,59 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "minecraft:chicken",
+      "min_engine_version": "1.12.0",
+      "materials": {
+        "default": "chicken",
+        "legs": "chicken_legs"
+      },
+      "textures": {
+        "default": "textures/entity/chicken"
+      },
+      "geometry": {
+        "default": "geometry.chicken"
+      },
+      "scripts": {
+        "scale": "q.life_time < 0.2 ? q.life_time * 5 : 1",
+        "pre_animation": [
+          "variable.tcos0 = (Math.cos(query.modified_distance_moved * 25.44666) * query.modified_move_speed) * 57.3;",
+          "variable.tcos1 = (Math.cos(query.modified_distance_moved * 50.89333) * query.modified_move_speed) * 57.3;"
+        ],
+        "animate": [
+          "root",
+          { "look_at_target": "query.is_alive" },
+          { "chicken_big_head": "query.is_baby" },
+          { "dead": "!query.is_alive" }
+        ],
+        "initialize": [
+          "v.roll = math.random_integer(1, 5);"
+        ]
+      },
+      "animations": {
+        "root": "controller.animation.common_animal.root",
+        "chicken_baby_big_head": "controller.animation.chicken.baby_big_head",
+        "look_at_target": "animation.common.look_at_target",
+        "chicken_big_head": "animation.chicken.baby_transform",
+        "base_pose": "animation.chicken.base_pose",
+        "base_pose_sus": "animation.chicken.base_pose_sus",
+        "idle1": "animation.chicken.idle1",
+        "idle2": "animation.chicken.idle2",
+        "idle3": "animation.chicken.idle3",
+        "move_upper_body": "animation.chicken.move_upper_body",
+        "move_lower_body": "animation.chicken.move_lower_body",
+        "panic": "animation.chicken.panic",
+        "dead": "animation.custom_death",
+        "dead1": "animation.chicken.dead1",
+        "dead2": "animation.chicken.dead2",
+        "dead3": "animation.chicken.dead3",
+        "dead4": "animation.chicken.dead4"
+      },
+      "render_controllers": [ "controller.render.chicken" ],
+      "spawn_egg": {
+        "texture": "spawn_egg",
+        "texture_index": 0
+      }
+    }
+  }
+}

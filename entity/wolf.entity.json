@@ -1,0 +1,75 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "minecraft:wolf",
+      "materials": { "default": "wolf" },
+      "textures": {
+        "default": "textures/entity/wolf/wolf",
+        "angry": "textures/entity/wolf/wolf_angry",
+        "tame": "textures/entity/wolf/wolf_tame"
+      },
+      "geometry": {
+        "default": "geometry.wolf"
+      },
+      "scripts": {
+        "scale": "q.life_time < 0.2 ? q.life_time * 5 : 1",
+        "pre_animation": [
+          "variable.body_shake_angle = 0.05 * query.frame_alpha + query.shake_angle;",
+          "variable.body_roll_progress = Math.clamp((variable.body_shake_angle - 0.16) / 1.8, 0, 1);",
+          "variable.body_rot_z = Math.sin(variable.body_roll_progress * 180) * Math.sin(variable.body_roll_progress * 1980) * 27;",
+          "variable.upper_body_roll_progress = Math.clamp((variable.body_shake_angle - 0.08) / 1.8, 0, 1);",
+          "variable.upper_body_rot_z = (Math.sin(variable.upper_body_roll_progress * 180) * Math.sin(variable.upper_body_roll_progress * 1980) * 27) - variable.body_rot_z;",
+          "variable.tail_roll_progress = Math.clamp((variable.body_shake_angle - 0.2) / 1.8, 0, 1);",
+          "variable.tail_rot_z = (Math.sin(variable.tail_roll_progress * 180) * Math.sin(variable.tail_roll_progress * 1980) * 27) - variable.body_rot_z;",
+          "variable.head_roll_progress = Math.clamp(variable.body_shake_angle / 1.8, 0, 1);",
+          "variable.head_rot_z = (Math.sin(variable.head_roll_progress * 180) * Math.sin(variable.head_roll_progress * 1980) * 27) - variable.body_rot_z;",
+          "variable.tcos0 = (Math.cos(query.modified_distance_moved * 38.17) * query.modified_move_speed) * 57.3;",
+          "variable.tcos1 = (Math.cos((query.modified_distance_moved - 5) * 76.34) * query.modified_move_speed) * 57.3;",
+          "variable.tcos2 = (Math.cos(query.modified_distance_moved * 14.31375) * query.modified_move_speed) * 57.3;",
+          "variable.legrightfront = (Math.cos(query.modified_distance_moved * 38.17) * query.modified_move_speed) * 57.3;",
+          "variable.legleftfront = (Math.cos((query.modified_distance_moved - 1.5) * 38.17) * query.modified_move_speed) * 57.3;",
+          "variable.legrightback = (Math.cos((query.modified_distance_moved - 3) * 38.17) * query.modified_move_speed) * 57.3;",
+          "variable.legleftback = (Math.cos((query.modified_distance_moved - 4.5) * 38.17) * query.modified_move_speed) * 57.3;"
+        ],
+        "animate": [
+          "root",
+          { "look_at_target": "query.is_alive" },
+          { "wolf_big_head": "query.is_baby" },
+          { "dead": "!query.is_alive" }
+        ],
+        "initialize": [
+          "v.roll = math.random_integer(1, 5);"
+        ]
+      },
+      "animations": {
+        "root": "controller.animation.wolf.root",
+        "wolf_baby_big_head": "controller.animation.wolf.baby_big_head",
+        "look_at_target": "animation.wolf.look_at_target",
+        "wolf_big_head": "animation.wolf.baby_transform",
+        "base_pose": "animation.wolf.base_pose",
+        "base_pose_sus": "animation.wolf.base_pose_sus",
+        "idle1": "animation.wolf.idle1",
+        "idle2": "animation.wolf.idle2",
+        "idle3": "animation.wolf.idle3",
+        "move_upper_body": "animation.wolf.move_upper_body",
+        "move_lower_body_notarget": "animation.wolf.move_lower_body_notarget",
+        "move_lower_body_target_front": "animation.wolf.move_lower_body_target_front",
+        "move_lower_body_target_back": "animation.wolf.move_lower_body_target_back",
+        "sit_trans": "animation.wolf.sit_trans",
+        "sit": "animation.wolf.sit",
+        "shake": "animation.wolf.shake",
+        "interested": "animation.wolf.interested",
+        "attack": "animation.wolf.attack",
+        "dead": "animation.custom_death",
+        "dead1": "animation.wolf.dead1",
+        "dead2": "animation.wolf.dead2"
+      },
+      "render_controllers": [ "controller.render.wolf" ],
+      "spawn_egg": {
+        "texture": "spawn_egg",
+        "texture_index": 4
+      }
+    }
+  }
+}

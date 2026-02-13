@@ -1,0 +1,58 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "minecraft:wandering_trader",
+      "materials": {
+        "default": "wandering_trader"
+      },
+      "geometry": {
+        "default": "geometry.villager_v2"
+      },
+      "textures": {
+        "default": "textures/entity/wandering_trader"
+      },
+      "scripts": {
+        "scale": "q.life_time < 0.2 ? q.life_time * 5 : 0.9375",
+        "pre_animation": [
+          "variable.tcos0 = (Math.cos(query.modified_distance_moved * 25.44666) * query.modified_move_speed) * 57.3;",
+          "variable.tcos1 = (Math.cos(query.modified_distance_moved * 50.89333) * query.modified_move_speed) * 57.3;"
+        ],
+        "animate": [
+          "root",
+          { "look_at_target": "query.is_alive" },
+          { "dead": "!query.is_alive" }
+        ],
+        "initialize": [
+          "v.roll = math.random_integer(1, 5);"
+        ]
+      },
+      "animations": {
+        "root": "controller.animation.villager_wandering_trader.root",
+        "villager_baby_big_head": "controller.animation.villager.baby_big_head",
+        "look_at_target": "animation.common.look_at_target",
+        "base_pose": "animation.villager.base_pose",
+        "base_pose_sus": "animation.villager.base_pose_sus",
+        "hold_item": "animation.villager.holding_item",
+        "idle1": "animation.villager.idle1",
+        "idle2": "animation.villager.idle2",
+        "idle3": "animation.villager.idle3",
+        "idle4": "animation.villager.idle4",
+        "move_upper_body": "animation.villager.move_upper_body",
+        "move_lower_body": "animation.villager.move_lower_body",
+        "panic": "animation.villager.panic",
+        "dead": "animation.custom_death",
+        "dead1": "animation.villager.dead1",
+        "dead2": "animation.villager.dead2",
+        "dead3": "animation.villager.dead3",
+        "dead4": "animation.villager.dead4"
+      },
+      "render_controllers": [
+        "controller.render.wandering_trader"
+      ],
+      "spawn_egg": {
+        "texture": "spawn_egg_wandering_trader"
+      }
+    }
+  }
+}

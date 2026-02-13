@@ -1,0 +1,53 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "minecraft:bee",
+      "materials": { "default": "bee" },
+      "textures": {
+        "default": "textures/entity/bee/bee",
+        "angry": "textures/entity/bee/bee_angry",
+        "nectar": "textures/entity/bee/bee_nectar",
+        "angry_nectar": "textures/entity/bee/bee_angry_nectar"
+      },
+      "geometry": {
+        "default": "geometry.bee"
+      },
+      "scripts": {
+        "scale": "q.life_time < 0.2 ? q.life_time * 5 : 1",
+        "animate": [
+          "root",
+          { "sting": "query.is_alive" },
+          { "bobbing": "query.is_alive" },
+          { "drip": "query.is_alive" },
+          { "dead": "!query.is_alive" },
+          { "bee_no_stinger": "query.mark_variant == 1" }
+        ]
+      },
+      "animations": {
+        "root": "controller.animation.bee.root",
+        "controller_bee_sting": "controller.animation.bee.sting",
+        "drip": "controller.animation.bee.drip",
+        "base_pose": "animation.bee.base_pose",
+        "idle": "animation.custom_death",
+        "idle1": "animation.bee.idle1",
+        "idle2": "animation.bee.idle2",
+        "idle3": "animation.bee.idle3",
+        "sting": "animation.bee.sting",
+        "bee_no_stinger": "animation.bee.no_stinger",
+        "bobbing": "animation.bee.fly.bobbing",
+        "dead": "animation.custom_death",
+        "dead1": "animation.bee.dead1",
+        "dead2": "animation.bee.dead2"
+      },
+      "render_controllers": [ "controller.render.bee" ],      
+      "particle_effects": {
+        "nectar_dripping": "minecraft:nectar_drip_particle"
+      },
+      "spawn_egg": {
+        "texture": "egg_bee",
+        "texture_index": 0
+      }
+    }
+  }
+}

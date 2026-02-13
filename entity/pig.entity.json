@@ -1,0 +1,61 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "minecraft:pig",
+      "min_engine_version": "1.8.0",
+      "materials": { "default": "pig" },
+      "textures": {
+        "default": "textures/entity/pig/pig",
+        "saddled": "textures/entity/pig/pig_saddle"
+      },
+      "geometry": {
+        "default": "geometry.pig"
+      },
+      "scripts": {
+        "scale": "q.life_time < 0.2 ? q.life_time * 5 : 1",
+        "pre_animation": [
+          "variable.tcos0 = (Math.cos(query.modified_distance_moved * 38.17) * query.modified_move_speed) * 57.3;",
+          "variable.tcos1 = (Math.cos(query.modified_distance_moved * 76.34) * query.modified_move_speed) * 57.3;"
+        ],
+        "animate": [
+          "root",
+          { "look_at_target": "query.is_alive" },
+          { "pig_big_head": "query.is_baby" },
+          { "dead": "!query.is_alive" }
+        ],
+        "initialize": [
+          "v.tcos1 = 0;",
+          "v.roll = math.random_integer(1, 5);"
+        ],
+        "variables": {
+          "variable.tcos1": "public"
+        }
+      },
+      "animations": {
+        "root": "controller.animation.common_animal.root",
+        "pig_baby_big_head": "controller.animation.pig.baby_big_head",
+        "look_at_target": "animation.pig.look_at_target",
+        "pig_big_head": "animation.pig.baby_transform",
+        "base_pose": "animation.pig.base_pose",
+        "base_pose_sus": "animation.pig.base_pose_sus",
+        "idle1": "animation.pig.idle1",
+        "idle2": "animation.pig.idle2",
+        "idle3": "animation.pig.idle3",
+        "move_upper_body": "animation.pig.move_upper_body",
+        "move_lower_body": "animation.pig.move_lower_body",
+        "panic": "animation.pig.panic",
+        "dead": "animation.custom_death",
+        "dead1": "animation.pig.dead1",
+        "dead2": "animation.pig.dead2",
+        "dead3": "animation.pig.dead1",
+        "dead4": "animation.pig.dead2"
+      },
+      "render_controllers": [ "controller.render.pig" ],
+      "spawn_egg": {
+        "texture": "spawn_egg",
+        "texture_index": 2
+      }
+    }
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "minecraft:donkey",
+      "min_engine_version": "1.17.10",
+      "materials": {
+        "default": "horse"
+      },
+      "textures": {
+        "donkey": "textures/entity/horse2/donkey",
+        "markings_none": "textures/entity/horse2/horse_markings_none",
+        "armor_none": "textures/entity/horse2/armor/horse_armor_none"
+      },
+      "geometry": {
+        "default": "geometry.horse.v3"
+      },
+      "scripts": {
+        "scale": "q.life_time < 0.2 ? q.life_time * 4.35 : 0.87",
+        "initialize": [
+          "v.eat_anim = 0.0;",
+          "v.roll = math.random_integer(1, 5);",
+          "v.tcos2 = 0;"
+        ],
+        "variables": {
+          "variable.tcos2": "public"
+        },
+        "pre_animation": [
+          "variable.armor_texture_slot = query.armor_texture_slot(1);",
+          "variable.eat_anim = math.clamp(variable.eat_anim + (query.is_grazing ? ((1.0 - variable.eat_anim) * 0.4 + 0.05) : -variable.eat_anim * 0.4 - 0.05) * query.delta_time * 20.0, 0.0, 1.0);",
+          "variable.head_x_rot = query.target_x_rotation + (query.modified_move_speed > 0.2 ? (math.cos(query.modified_distance_moved * 11.46) * 11.46 * query.modified_move_speed + query.modified_move_speed * 11.46) : 0.0);",
+          "variable.inverse_max_stand_eat = (1.0 - math.max(variable.stand_anim, variable.eat_anim));",
+          "variable.leg_stand_factor = math.cos((query.modified_distance_moved * 38.38) + 180.0);",
+          "variable.leg_x_rot_anim = variable.leg_stand_factor * 45.8 * query.modified_move_speed;",
+          "variable.tcos0 = (Math.cos(query.modified_distance_moved * 38.17) * query.modified_move_speed) * 57.3;",
+          "variable.tcos1 = (Math.cos(query.modified_distance_moved * 76.34) * query.modified_move_speed) * 57.3;",
+          "variable.tcos2 = (Math.cos(query.modified_distance_moved * 14.31375) * query.modified_move_speed) * 57.3;",
+          "variable.legrightfront = (Math.cos(query.modified_distance_moved * 14.31375) * query.modified_move_speed) * 57.3;",
+          "variable.legleftfront = (Math.cos((query.modified_distance_moved - 2.5) * 14.31375) * query.modified_move_speed) * 57.3;",
+          "variable.legrightback = (Math.cos((query.modified_distance_moved - 5) * 14.31375) * query.modified_move_speed) * 57.3;",
+          "variable.legleftback = (Math.cos((query.modified_distance_moved - 7.5) * 14.31375) * query.modified_move_speed) * 57.3;"
+        ],
+        "animate": [
+          "root",
+          { "look_at_target": "query.is_alive" },
+          { "dead": "!query.is_alive" },
+          { "baby_transform": "query.is_baby" },
+          { "rear": "variable.stand_anim > 0.0" },
+          { "eat": "!query.is_standing" },
+          { "tail": "variable.shake_tail" }
+        ]
+      },
+      "animations": {
+        "baby_transform": "animation.horse.baby_transform",
+        "eat": "animation.horse.eat",
+        "rear": "animation.horse.rear",
+        "tail": "animation.horse.tail",
+        "look_at_target": "animation.horse.look_at_player",
+        "root": "controller.animation.horse.root",
+        "horse_big_head": "animation.horse.baby_transform",
+        "base_pose": "animation.horse.base_pose",
+        "base_pose_sus": "animation.horse.base_pose_sus",
+        "idle1": "animation.horse.idle1",
+        "idle2": "animation.horse.idle2",
+        "move_upper_body": "animation.horse.move_upper_body",
+        "move_lower_body_walk": "animation.horse.move_lower_body_walk",
+        "move_lower_body_run_front": "animation.horse.move_lower_body_run_front",
+        "move_lower_body_run_back": "animation.horse.move_lower_body_run_back",
+        "dead": "animation.custom_death",
+        "dead1": "animation.horse.dead1",
+        "dead2": "animation.horse.dead2",
+        "dead3": "animation.horse.dead1",
+        "dead4": "animation.horse.dead2"
+      },
+      "render_controllers": [ "controller.render.donkey.v3" ],
+      "spawn_egg": {
+        "texture": "spawn_egg",
+        "texture_index": 30
+      }
+    }
+  }
+}

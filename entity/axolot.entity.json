@@ -1,0 +1,49 @@
+{
+  "format_version": "1.8.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "minecraft:axolot",
+      "materials": {
+        "default": "axolot",
+        "limbs": "axolot_limbs"
+      },
+      "textures": {
+        "blue": "textures/entity/axolot/axolot_blue",
+        "cyan": "textures/entity/axolot/axolot_cyan",
+        "gold": "textures/entity/axolot/axolot_gold",
+        "lucy": "textures/entity/axolot/axolot_lucy",
+        "wild": "textures/entity/axolot/axolot_wild"
+      },
+      "geometry": {
+        "default": "geometry.axolot"
+      },
+      "animations": {
+        "idle_float": "animation.axolot.idle_underwater",
+        "idle_floor": "animation.axolot.idle_floor",
+        "idle_floor_water": "animation.axolot.idle_floor_underwater",
+        "swim": "animation.axolot.swim",
+        "walk_floor": "animation.axolot.walk_floor",
+        "walk_floor_water": "animation.axolot.walk_floor_underwater",
+        "play_dead": "animation.axolot.play_dead",
+        "swim_angle": "animation.axolot.swim_angle",
+        "look_at_target": "animation.common.look_at_target"
+      },
+      "scripts": {
+        "scale": "q.life_time < 0.2 ? q.life_time * 5 : 1",
+        "pre_animation": [
+          "variable.moving = query.ground_speed > 0 || query.vertical_speed > 0;",
+          "variable.pitch = query.body_x_rotation;"
+          ]
+      },
+      "animation_controllers": [
+        { "general": "controller.animation.axolot.general" },
+        { "move": "controller.animation.axolot.move" }
+      ],
+      "render_controllers": [ "controller.render.axolot" ],
+      "spawn_egg": {
+        "base_color": "#0xfbc1e3",
+        "overlay_color": "#0xa62d74"
+      }
+    }
+  }
+}
