@@ -1,0 +1,42 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:attachable": {
+    "description": {
+      "identifier": "minecraft:bow.stray",
+      "item": { "minecraft:bow": "query.owner_identifier == 'minecraft:stray'" },
+      "materials": {
+        "default": "entity_alphatest",
+        "enchanted": "entity_alphatest_glint"
+      },
+      "textures": {
+        "default": "textures/items/bow_standby",
+        "bow_pulling_0": "textures/items/bow_pulling_0",
+        "bow_pulling_1": "textures/items/bow_pulling_1",
+        "bow_pulling_2": "textures/items/bow_pulling_2",
+        "enchanted": "textures/misc/enchanted_item_glint"
+      },
+      "geometry": {
+        "default": "geometry.bow_standby",
+        "bow_pulling_0": "geometry.bow_pulling_0",
+        "bow_pulling_1": "geometry.bow_pulling_1",
+        "bow_pulling_2": "geometry.bow_pulling_2"
+      },
+      "scripts": {
+        "pre_animation": [
+          "v.charge_amount = v.bow_frame;"
+        ],
+        "animate": [ "shoot" ],
+        "initialize": [
+          "v.bow_frame = 0;",
+          "v.x = 0;",
+          "v.y = 0;"
+        ]
+      },
+      "animations": {
+        "shoot": "controller.animation.bow.shoot",
+        "charge_bow": "animation.bow.charge_bow"
+      },
+      "render_controllers": [ "controller.render.bow.skeleton" ]
+    }
+  }
+}
