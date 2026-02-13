@@ -1,0 +1,1668 @@
+{
+	"format_version" : "1.10.0",
+	"animation_controllers" : {
+    "controller.animation.zombie.root" : {
+			"initial_state" : "default",
+			"states" : {
+				"default" : {
+          "on_entry": [ "v.roll = math.random_integer(1, 5);" ],
+          "animations" : [
+            "base_pose",
+            { "riding.legs": "q.is_riding" }
+          ],
+					"transitions" : [
+            { "move" : "q.ground_speed > 0.0 && q.is_on_ground && !q.is_riding && !q.has_target" },
+            { "move_target" : "q.ground_speed > 0.0 && q.is_on_ground && !q.is_riding && q.has_target && !q.is_item_equipped" },
+            { "move_target_equipped" : "q.ground_speed > 0.0 && q.is_on_ground && !q.is_riding && q.has_target && q.is_item_equipped" },
+            { "attack": "v.attack_time" },
+            { "dead": "!q.is_alive" }
+          ],
+          "on_exit": [ "v.attack_roll = math.random_integer(1, 3);" ],
+					"blend_transition": 0.2,
+					"blend_via_shortest_path": true
+        },
+        "idle": {
+          "animations" : [
+            { "idle1": "v.roll == 1" },
+            { "idle2": "v.roll == 2" },
+            { "idle3": "v.roll == 3" }
+          ],
+					"transitions" : [
+            { "default" : "q.has_target || q.is_in_contact_with_water || q.any_animation_finished" },
+            { "move" : "q.ground_speed >= 0.1" },
+            { "dead": "!q.is_alive" }
+          ],
+					"blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "default_trans": {
+          "animations" : [
+            "base_pose",
+            { "move_upper_body_target1_default": "v.attack_roll == 3 && !q.is_item_equipped" },
+            { "move_upper_body_target1_equipped_default": "v.attack_roll == 3 && q.is_item_equipped" },
+            { "move_upper_body_target2_default": "v.attack_roll == 1 && !q.is_item_equipped" },
+            { "move_upper_body_target2_equipped_default": "v.attack_roll == 1 && q.is_item_equipped" },
+            { "move_upper_body_target3_default": "v.attack_roll == 2 && !q.is_item_equipped" },
+            { "move_upper_body_target3_equipped_default": "v.attack_roll == 2 && q.is_item_equipped" }
+          ],
+					"transitions" : [
+            { "default" : "q.any_animation_finished" }
+          ],
+          "blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "move": {
+          "on_entry": [ "v.roll = math.random_integer(1, 5);" ],
+          "animations": [
+            "base_pose",
+            "move_upper_body",
+            "move_lower_body"
+          ],
+          "transitions": [
+            { "default": "(q.ground_speed == 0.0 && v.roll > 3) || (q.ground_speed == 0.0 && v.roll <= 3 && q.has_target)" },
+            { "idle": "!q.has_target && q.ground_speed == 0.0 && v.roll <= 3" },
+            { "move_target": "q.has_target && !q.is_item_equipped" },
+            { "move_target_equipped": "q.has_target && q.is_item_equipped" },
+            { "attack": "v.attack_time" },
+            { "dead": "!q.is_alive" }
+          ],
+          "blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "move_target": {
+          "on_entry": [ "v.delay = q.life_time;" ],
+          "animations": [
+            "base_pose",
+            "move_upper_body",
+            "move_lower_body"
+          ],
+          "transitions": [
+            { "default_trans": "q.life_time - v.delay >= 1.2 && !q.has_target" },
+            { "attack": "v.attack_time" },
+            { "dead": "!q.is_alive" }
+          ],
+          "blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "move_target_equipped": {
+          "on_entry": [ "v.delay = q.life_time;" ],
+          "animations": [
+            "base_pose",
+            "move_lower_body",
+            "move_upper_body",
+            { "move_upper_body_target1_equipped": "v.attack_roll == 3" },
+            { "move_upper_body_target2_equipped": "v.attack_roll == 1" },
+            { "move_upper_body_target3_equipped": "v.attack_roll == 2" }
+          ],
+          "transitions": [
+            { "default_trans": "q.life_time - v.delay >= 1.2 && !q.has_target" },
+            { "attack": "v.attack_time" },
+            { "dead": "!q.is_alive" }
+          ]
+        },
+        "attack": {
+          "on_entry": [ "v.attack_roll = v.attack_roll < 3 ? v.attack_roll + 1 : 1;", "v.delay = q.life_time;" ],
+          "animations": [
+            "base_pose",
+            { "move_upper_body": "!q.is_item_equipped" },
+            "move_lower_body",
+            { "attack1": "v.attack_roll == 1 && !q.is_item_equipped" },
+            { "attack1_equipped": "v.attack_roll == 1 && q.is_item_equipped" },
+            { "attack2": "v.attack_roll == 2 && !q.is_item_equipped" },
+            { "attack2_equipped": "v.attack_roll == 2 && q.is_item_equipped" },
+            { "attack3": "v.attack_roll == 3 && !q.is_item_equipped" },
+            { "attack3_equipped": "v.attack_roll == 3 && q.is_item_equipped" },
+            { "riding.legs": "q.is_riding" }
+          ],
+          "transitions": [
+            { "move_target": "!v.attack_time && q.life_time - v.delay >= 0.5 && !q.is_item_equipped" },
+            { "move_target_equipped": "!v.attack_time && q.life_time - v.delay >= 0.5 && q.is_item_equipped" },
+            { "dead": "!q.is_alive" }
+          ],
+					"blend_transition": 0.2,
+					"blend_via_shortest_path": true
+        },
+        "dead": {
+          "on_entry": [ "v.roll = math.random_integer(1, 5);" ],
+          "animations": [
+            { "dead1": "v.roll == 1" },
+            { "dead2": "v.roll == 2" },
+            { "dead3": "v.roll == 3" },
+            { "dead4": "v.roll == 4" },
+            { "dead5": "v.roll == 5" }
+          ]
+        }
+			}
+    },
+    "controller.animation.drowned.root" : {
+			"initial_state" : "default",
+			"states" : {
+				"default" : {
+          "animations" : [
+            "base_pose",
+            { "riding.legs": "q.is_riding" }
+          ],
+					"transitions" : [
+            { "move" : "q.ground_speed > 0.0 && q.is_on_ground && !q.is_riding && v.swim_amount == 0.0" },
+            { "in_water" : "v.swim_amount > 0.0" },
+            { "attack": "v.attack_time" },
+            { "dead": "!q.is_alive" }
+          ],
+					"blend_transition": 0.4,
+					"blend_via_shortest_path": true
+        },
+        "in_water": {
+          "animations" : [
+            "base_pose_water",
+            "move_lower_body"
+          ],
+					"transitions" : [
+            { "default" : "v.swim_amount == 0.0" },
+            { "attack": "v.attack_time" },
+            { "dead": "!q.is_alive" }
+          ],
+					"blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "idle": {
+          "animations" : [
+            { "idle1": "v.roll == 1" },
+            { "idle2": "v.roll == 2" },
+            { "idle3": "v.roll == 3" }
+          ],
+					"transitions" : [
+            { "default" : "q.has_target || q.any_animation_finished" },
+            { "move" : "q.ground_speed >= 0.1" },
+            { "dead": "!q.is_alive" }
+          ],
+					"blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "default_trans": {
+          "animations" : [
+            "base_pose",
+            { "move_upper_body_target1_default": "v.attack_roll == 3 && !q.is_item_equipped" },
+            { "move_upper_body_target1_equipped_default": "v.attack_roll == 3 && q.is_item_equipped" },
+            { "move_upper_body_target2_default": "v.attack_roll == 1 && !q.is_item_equipped" },
+            { "move_upper_body_target2_equipped_default": "v.attack_roll == 1 && q.is_item_equipped" },
+            { "move_upper_body_target3_default": "v.attack_roll == 2 && !q.is_item_equipped" },
+            { "move_upper_body_target3_equipped_default": "v.attack_roll == 2 && q.is_item_equipped" }
+          ],
+					"transitions" : [
+            { "default" : "q.any_animation_finished" }
+          ],
+          "blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "move": {
+          "on_entry": [ "v.roll = math.random_integer(1, 5);" ],
+          "animations": [
+            "base_pose",
+            "move_upper_body",
+            "move_lower_body"
+          ],
+          "transitions": [
+            { "default": "(q.ground_speed == 0.0 && v.roll > 3) || (q.ground_speed == 0.0 && v.roll <= 3 && q.has_target)" },
+            { "idle": "!q.has_target && q.ground_speed == 0.0 && v.roll <= 3" },
+            { "move_target": "q.has_target && !q.is_item_equipped" },
+            { "move_target_equipped": "q.has_target && q.is_item_equipped" },
+            { "attack": "v.attack_time" },
+            { "dead": "!q.is_alive" }
+          ],
+          "blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "move_target": {
+          "on_entry": [ "v.delay = q.life_time;" ],
+          "animations": [
+            "base_pose",
+            "move_upper_body",
+            "move_lower_body"
+          ],
+          "transitions": [
+            { "default_trans": "q.life_time - v.delay >= 1.2 && !q.has_target" },
+            { "attack": "v.attack_time" },
+            { "dead": "!q.is_alive" }
+          ],
+          "blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "move_target_equipped": {
+          "on_entry": [ "v.delay = q.life_time;" ],
+          "animations": [
+            "base_pose",
+            "move_lower_body",
+            "move_upper_body",
+            { "move_upper_body_target1_equipped": "v.attack_roll == 3" },
+            { "move_upper_body_target2_equipped": "v.attack_roll == 1" },
+            { "move_upper_body_target3_equipped": "v.attack_roll == 2" }
+          ],
+          "transitions": [
+            { "default_trans": "q.life_time - v.delay >= 1.2 && !q.has_target" },
+            { "attack": "v.attack_time" },
+            { "dead": "!q.is_alive" }
+          ]
+        },
+        "attack": {
+          "on_entry": [ "v.attack_roll = v.attack_roll < 3 ? v.attack_roll + 1 : 1;", "v.delay = q.life_time;" ],
+          "animations": [
+            "base_pose",
+            { "move_upper_body": "!q.is_item_equipped" },
+            "move_lower_body",
+            { "attack1": "v.attack_roll == 1 && !q.is_item_equipped" },
+            { "attack1_equipped": "v.attack_roll == 1 && q.is_item_equipped" },
+            { "attack2": "v.attack_roll == 2 && !q.is_item_equipped" },
+            { "attack2_equipped": "v.attack_roll == 2 && q.is_item_equipped" },
+            { "attack3": "v.attack_roll == 3 && !q.is_item_equipped" },
+            { "attack3_equipped": "v.attack_roll == 3 && q.is_item_equipped" },
+            { "riding.legs": "q.is_riding" }
+          ],
+          "transitions": [
+            { "move_target": "!v.attack_time && q.life_time - v.delay >= 0.5 && !q.is_item_equipped" },
+            { "move_target_equipped": "!v.attack_time && q.life_time - v.delay >= 0.5 && q.is_item_equipped" },
+            { "dead": "!q.is_alive" }
+          ],
+					"blend_transition": 0.2,
+					"blend_via_shortest_path": true
+        },
+        "dead": {
+          "on_entry": [ "v.roll = math.random_integer(1, 4);" ],
+          "animations": [
+            { "dead1": "v.roll == 1" },
+            { "dead2": "v.roll == 2" },
+            { "dead3": "v.roll == 3" },
+            { "dead4": "v.roll == 4" }
+          ]
+        }
+			}
+    },
+    "controller.animation.villager.root" : {
+			"initial_state" : "default",
+			"states" : {
+				"default" : {
+          "animations" : [
+            { "base_pose": "v.roll < 5" },
+            { "base_pose_sus": "v.roll >= 5" }
+          ],
+					"transitions" : [
+            { "move" : "q.ground_speed > 0.0 && q.is_on_ground && !q.is_riding" },
+            { "hold_item": "q.is_item_equipped" },
+            { "move_panic": "q.is_avoiding_mobs" },
+            { "sleep": "q.is_sleeping" },
+            { "dead": "!q.is_alive" }
+          ],
+          "on_exit": [ "v.roll = math.random_integer(1, 7);" ],
+					"blend_transition": 0.4,
+					"blend_via_shortest_path": true
+        },
+        "hold_item": {
+          "animations": [ "hold_item" ],
+          "transitions": [
+            { "default": "!q.is_item_equipped" },
+            { "dead": "!q.is_alive" }
+          ],
+					"blend_transition": 0.2,
+					"blend_via_shortest_path": true
+        },
+        "idle": {
+          "animations" : [
+            { "idle1": "v.roll <= 3" },
+            { "idle2": "v.roll == 4" },
+            { "idle3": "v.roll == 5" },
+            { "idle4": "v.roll >= 6" }
+          ],
+					"transitions" : [
+            { "default" : "q.is_in_contact_with_water || q.any_animation_finished || q.is_sleeping" },
+            { "move" : "q.ground_speed >= 0.1" },
+            { "move_panic": "q.is_avoiding_mobs" },
+            { "dead": "!q.is_alive" }
+          ],
+          "on_exit": [ "v.roll = math.random_integer(1, 7);" ],
+					"blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "move": {
+          "animations": [
+            "base_pose",
+            "move_upper_body",
+            "move_lower_body"
+          ],
+          "transitions": [
+            { "default": "(q.ground_speed == 0.0 && v.roll < 5) || (q.ground_speed == 0.0 && v.roll >= 5) || q.is_sleeping" },
+            { "idle": "!q.is_avoiding_mobs && q.ground_speed == 0.0 && v.roll >= 5" },
+            { "move_panic": "q.is_avoiding_mobs" },
+            { "sleep": "q.is_sleeping" },
+            { "dead": "!q.is_alive" }
+          ],
+          "on_exit": [ "v.roll = math.random_integer(1, 7);" ],
+          "blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "move_panic": {
+          "animations": [
+            "base_pose",
+            "panic",
+            "move_lower_body"
+          ],
+          "transitions": [
+            { "move": "!q.is_avoiding_mobs" },
+            { "dead": "!q.is_alive" }
+          ],
+          "on_exit": [ "v.roll = math.random_integer(1, 7);" ],
+          "blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "sleep": {
+          "animations": [ "sleep" ],
+          "transitions": [
+            { "default": "!q.is_sleeping" }
+          ],
+          "blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "dead": {
+          "on_entry": [ "v.roll = math.random_integer(1, 4);" ],
+          "animations": [
+            { "dead1": "v.roll == 1" },
+            { "dead2": "v.roll == 2" },
+            { "dead3": "v.roll == 3" },
+            { "dead4": "v.roll == 4" }
+          ]
+        }
+			}
+    },
+    "controller.animation.villager_wandering_trader.root" : {
+			"initial_state" : "default",
+			"states" : {
+				"default" : {
+          "animations" : [
+            { "base_pose": "v.roll < 5" },
+            { "base_pose_sus": "v.roll >= 5" }
+          ],
+					"transitions" : [
+            { "move" : "q.ground_speed > 0.0 && q.is_on_ground && !q.is_riding" },
+            { "hold_item": "q.is_item_equipped" },
+            { "dead": "!q.is_alive" }
+          ],
+          "on_exit": [ "v.roll = math.random_integer(1, 7);" ],
+					"blend_transition": 0.4,
+					"blend_via_shortest_path": true
+        },
+        "hold_item": {
+          "animations": [ "hold_item" ],
+          "transitions": [
+            { "default": "!q.is_item_equipped" },
+            { "dead": "!q.is_alive" }
+          ],
+					"blend_transition": 0.2,
+					"blend_via_shortest_path": true
+        },
+        "idle": {
+          "animations" : [
+            { "idle1": "v.roll <= 3" },
+            { "idle2": "v.roll == 4" },
+            { "idle3": "v.roll == 5" },
+            { "idle4": "v.roll >= 6" }
+          ],
+					"transitions" : [
+            { "default" : "q.is_in_contact_with_water || q.any_animation_finished" },
+            { "move" : "q.ground_speed >= 0.1" },
+            { "dead": "!q.is_alive" }
+          ],
+          "on_exit": [ "v.roll = math.random_integer(1, 7);" ],
+					"blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "move": {
+          "animations": [
+            "base_pose",
+            { "move_upper_body": "v.raise_arms == 0.0 && !q.is_avoiding_mobs" },
+            { "panic": "v.raise_arms > 0.0 || q.is_avoiding_mobs" },
+            "move_lower_body"
+          ],
+          "transitions": [
+            { "default": "q.ground_speed == 0.0 && v.roll < 5" },
+            { "idle": "!q.is_avoiding_mobs && q.ground_speed == 0.0 && v.roll >= 5" },
+            { "dead": "!q.is_alive" }
+          ],
+          "on_exit": [ "v.roll = math.random_integer(1, 7);" ],
+          "blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "dead": {
+          "on_entry": [ "v.roll = math.random_integer(1, 4);" ],
+          "animations": [
+            { "dead1": "v.roll == 1" },
+            { "dead2": "v.roll == 2" },
+            { "dead3": "v.roll == 3" },
+            { "dead4": "v.roll == 4" }
+          ]
+        }
+			}
+    },
+    "controller.animation.villager_zombie.root" : {
+			"initial_state" : "default",
+			"states" : {
+				"default" : {
+          "on_entry": [ "v.roll = math.random_integer(1, 5);" ],
+          "animations" : [
+            "base_pose",
+            { "riding.legs": "q.is_riding" }
+          ],
+					"transitions" : [
+            { "move" : "q.ground_speed > 0.0 && q.is_on_ground && !q.is_riding && !q.has_target" },
+            { "move_target" : "q.ground_speed > 0.0 && q.is_on_ground && !q.is_riding && q.has_target" },
+            { "attack": "v.attack_time" },
+            { "dead": "!q.is_alive" }
+          ],
+          "on_exit": [ "v.attack_roll = math.random_integer(1, 3);" ],
+					"blend_transition": 0.2,
+					"blend_via_shortest_path": true
+        },
+        "idle": {
+          "animations" : [
+            { "idle1": "v.roll == 1" },
+            { "idle2": "v.roll == 2" },
+            { "idle3": "v.roll == 3" }
+          ],
+					"transitions" : [
+            { "default" : "q.has_target || q.is_in_contact_with_water || q.any_animation_finished" },
+            { "move" : "q.ground_speed >= 0.1" },
+            { "dead": "!q.is_alive" }
+          ],
+					"blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "default_trans": {
+          "animations" : [
+            "base_pose",
+            { "move_upper_body_target1_default": "v.attack_roll == 3" },
+            { "move_upper_body_target2_default": "v.attack_roll == 1" },
+            { "move_upper_body_target3_default": "v.attack_roll == 2" }
+          ],
+					"transitions" : [
+            { "default" : "q.any_animation_finished" }
+          ],
+          "blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "move": {
+          "on_entry": [ "v.roll = math.random_integer(1, 5);" ],
+          "animations": [
+            "base_pose",
+            "move_upper_body",
+            "move_lower_body"
+          ],
+          "transitions": [
+            { "default": "(q.ground_speed == 0.0 && v.roll > 3) || (q.ground_speed == 0.0 && v.roll <= 3 && q.has_target)" },
+            { "idle": "!q.has_target && q.ground_speed == 0.0 && v.roll <= 3" },
+            { "move_target": "q.has_target" },
+            { "attack": "v.attack_time" },
+            { "dead": "!q.is_alive" }
+          ],
+          "blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "move_target": {
+          "on_entry": [ "v.delay = q.life_time;" ],
+          "animations": [
+            "move_upper_body",
+            "base_pose",
+            "move_lower_body"
+          ],
+          "transitions": [
+            { "default_trans": "q.life_time - v.delay >= 1.2 && !q.has_target" },
+            { "attack": "v.attack_time" },
+            { "dead": "!q.is_alive" }
+          ],
+          "blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "attack": {
+          "on_entry": [ "v.attack_roll = v.attack_roll < 3 ? v.attack_roll + 1 : 1;", "v.delay = q.life_time;" ],
+          "animations": [
+            "base_pose",
+            "move_upper_body",
+            "move_lower_body",
+            { "attack1": "v.attack_roll == 1" },
+            { "attack2": "v.attack_roll == 2" },
+            { "attack3": "v.attack_roll == 3" },
+            { "riding.legs": "q.is_riding" } 
+          ],
+          "transitions": [
+            { "move_target": "!v.attack_time && q.life_time - v.delay >= 0.5" },
+            { "dead": "!q.is_alive" }
+          ],
+					"blend_transition": 0.2,
+					"blend_via_shortest_path": true
+        },
+        "dead": {
+          "on_entry": [ "v.roll = math.random_integer(1, 4);" ],
+          "animations": [
+            { "dead1": "v.roll == 1" },
+            { "dead2": "v.roll == 2" },
+            { "dead3": "v.roll == 3" },
+            { "dead4": "v.roll == 4" }
+          ]
+        }
+			}
+    },
+    "controller.animation.vindicator.root" : {
+			"initial_state" : "default",
+			"states" : {
+				"default" : {
+          "on_entry": [ "v.roll = math.random_integer(1, 5);" ],
+          "animations" : [
+            { "base_pose": "v.roll < 5" },
+            { "base_pose_sus": "v.roll == 5" },
+            { "riding.legs": "q.is_riding" }
+          ],
+					"transitions" : [
+            { "move" : "q.ground_speed > 0.0 && q.is_on_ground && !q.is_riding && !q.has_target" },
+            { "move_target" : "q.ground_speed > 0.0 && q.is_on_ground && !q.is_riding && q.has_target" },
+            { "attack": "v.attack_time" },
+            { "dead": "!q.is_alive" },
+            { "celebrate": "q.is_celebrating" }
+          ],
+          "on_exit": [ "v.attack_roll = math.random_integer(1, 3);" ],
+					"blend_transition": 0.2,
+					"blend_via_shortest_path": true
+        },
+        "idle": {
+          "animations" : [
+            { "idle1": "v.roll == 1" },
+            { "idle2": "v.roll == 2" },
+            { "idle3": "v.roll == 3" }
+          ],
+					"transitions" : [
+            { "default" : "q.has_target || q.is_in_contact_with_water || q.any_animation_finished" },
+            { "move" : "q.ground_speed >= 0.1" },
+            { "dead": "!q.is_alive" },
+            { "celebrate": "q.is_celebrating" }
+          ],
+					"blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "default_trans": {
+          "animations" : [
+            "base_pose",
+            { "move_upper_body_target1_default": "v.attack_roll == 3" },
+            { "move_upper_body_target2_default": "v.attack_roll == 1" },
+            { "move_upper_body_target3_default": "v.attack_roll == 2" }
+          ],
+					"transitions" : [
+            { "default" : "q.any_animation_finished" }
+          ],
+          "blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "move": {
+          "on_entry": [ "v.roll = math.random_integer(1, 5);" ],
+          "animations": [
+            "base_pose",
+            "move_upper_body",
+            "move_lower_body"
+          ],
+          "transitions": [
+            { "default": "(q.ground_speed == 0.0 && v.roll > 3) || (q.ground_speed == 0.0 && v.roll <= 3 && q.has_target)" },
+            { "idle": "!q.has_target && q.ground_speed == 0.0 && v.roll <= 3" },
+            { "move_target": "q.has_target" },
+            { "attack": "v.attack_time" },
+            { "dead": "!q.is_alive" },
+            { "celebrate": "q.is_celebrating" }
+          ],
+          "blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "move_target": {
+          "on_entry": [ "v.delay = q.life_time;" ],
+          "animations": [
+            "base_pose",
+            { "move_upper_body_target1": "v.attack_roll == 3" },
+            { "move_upper_body_target2": "v.attack_roll == 1" },
+            { "move_upper_body_target3": "v.attack_roll == 2" },
+            "move_lower_body"
+          ],
+          "transitions": [
+            { "default_trans": "q.life_time - v.delay >= 1.2 && !q.has_target" },
+            { "attack": "v.attack_time" },
+            { "dead": "!q.is_alive" },
+            { "celebrate": "q.is_celebrating" }
+          ]
+        },
+        "attack": {
+          "on_entry": [ "v.attack_roll = v.attack_roll < 3 ? v.attack_roll + 1 : 1;", "v.delay = q.life_time;" ],
+          "animations": [
+            { "attack1": "v.attack_roll == 1" },
+            { "attack2": "v.attack_roll == 2" },
+            { "attack3": "v.attack_roll == 3" },
+            { "riding.legs": "q.is_riding" },
+            "base_pose",
+            "move_lower_body"
+          ],
+          "transitions": [
+            { "move_target": "!v.attack_time && q.life_time - v.delay >= 0.5" },
+            { "dead": "!q.is_alive" }
+          ],
+					"blend_transition": 0.2,
+					"blend_via_shortest_path": true
+        },
+        "dead": {
+          "on_entry": [ "v.roll = math.random_integer(1, 4);" ],
+          "animations": [
+            { "dead1": "v.roll == 1" },
+            { "dead2": "v.roll == 2" },
+            { "dead3": "v.roll == 3" },
+            { "dead4": "v.roll == 4" }
+          ]
+        },
+        "celebrate": {
+          "animations": [ "celebrate" ],
+          "transitions": [{ "default": "!q.is_celebrating || q.any_animation_finished" }],
+					"blend_transition": 0.2,
+					"blend_via_shortest_path": true
+        }
+			}
+    },
+    "controller.animation.pillager.root" : {
+			"initial_state" : "default",
+			"states" : {
+				"default" : {
+          "on_entry": [ "v.roll = math.random_integer(1, 5);" ],
+          "animations" : [
+            { "base_pose": "v.roll < 5" },
+            { "base_pose_sus": "v.roll == 5" },
+            { "riding.legs": "q.is_riding" }
+          ],
+					"transitions" : [
+            { "move" : "q.ground_speed > 0.0 && q.is_on_ground && !q.is_riding" },
+            { "dead": "!q.is_alive" },
+            { "celebrate": "q.is_celebrating" }
+          ],
+					"blend_transition": 0.4,
+					"blend_via_shortest_path": true
+        },
+        "idle": {
+          "animations" : [
+            { "base_pose": "v.attack_state != 0" },
+            { "idle1": "v.roll == 1 && v.attack_state == 0" },
+            { "idle2": "v.roll == 2 && v.attack_state == 0" },
+            { "idle3": "v.roll == 3 && v.attack_state == 0" }
+          ],
+					"transitions" : [
+            { "default" : "q.has_target || q.is_in_contact_with_water || q.any_animation_finished" },
+            { "move" : "q.ground_speed >= 0.1" },
+            { "dead": "!q.is_alive" },
+            { "celebrate": "q.is_celebrating" }
+          ],
+					"blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "move": {
+          "on_entry": [ "v.roll = math.random_integer(1, 5);" ],
+          "animations": [
+            { "base_pose": "v.attack_state == 0" },
+            { "move_upper_body": "v.attack_state == 0" },
+            "move_lower_body"
+          ],
+          "transitions": [
+            { "default": "(q.ground_speed == 0.0 && v.roll > 3) || (q.ground_speed == 0.0 && v.roll <= 3 && q.has_target)" },
+            { "idle": "!q.has_target && q.ground_speed == 0.0 && v.roll <= 3" },
+            { "dead": "!q.is_alive" },
+            { "celebrate": "q.is_celebrating" }
+          ],
+          "blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "dead": {
+          "on_entry": [ "v.roll = math.random_integer(1, 4);" ],
+          "animations": [
+            { "dead1": "v.roll == 1" },
+            { "dead2": "v.roll == 2" },
+            { "dead3": "v.roll == 3" },
+            { "dead4": "v.roll == 4" }
+          ]
+        },
+        "celebrate": {
+          "animations": [
+            "celebrate",
+            { "riding.legs": "q.is_riding" }
+          ],
+          "transitions": [{ "default": "!q.is_celebrating || q.any_animation_finished" }],
+					"blend_transition": 0.2,
+					"blend_via_shortest_path": true
+        }
+			}
+    },
+    "controller.animation.pillager.attack": {
+      "initial_state": "default",
+      "states": {
+        "default": {
+          "transitions": [
+            { "hold": "v.attack_state == 1 && q.is_alive" },
+            { "charge": "v.attack_state == 2 && q.is_alive" }
+          ],
+					"blend_transition": 0.2,
+					"blend_via_shortest_path": true
+        },
+        "charge": {
+          "animations": [ "crossbow_charge" ],
+          "transitions": [
+            { "default": "v.attack_state == 0 || !q.is_alive" },
+            { "hold": "v.attack_state == 1" }
+          ],
+					"blend_transition": 0.2,
+					"blend_via_shortest_path": true
+        },
+        "hold": {
+          "animations": [ "crossbow_hold" ],
+          "transitions": [
+            { "default": "v.attack_state == 0 || !q.is_alive" },
+            { "charge": "v.attack_state == 2" }
+          ],
+					"blend_transition": 0.2,
+					"blend_via_shortest_path": true
+        }
+      }
+    },
+    "controller.animation.evoker.root" : {
+			"initial_state" : "default",
+			"states" : {
+				"default" : {
+          "on_entry": [ "v.roll = math.random_integer(1, 5);" ],
+          "animations" : [
+            { "base_pose": "v.roll < 5" },
+            { "base_pose_sus": "v.roll == 5" },
+            { "riding.legs": "q.is_riding" }
+          ],
+					"transitions" : [
+            { "move" : "q.ground_speed > 0.0 && q.is_on_ground && !q.is_riding" },
+            { "attack": "q.is_casting" },
+            { "dead": "!q.is_alive" },
+            { "celebrate": "q.is_celebrating" }
+          ],
+					"blend_transition": 0.4,
+					"blend_via_shortest_path": true
+        },
+        "idle": {
+          "animations" : [
+            { "idle1": "v.roll == 1" },
+            { "idle2": "v.roll == 2" },
+            { "idle3": "v.roll == 3" }
+          ],
+					"transitions" : [
+            { "default" : "q.has_target || q.is_in_contact_with_water || q.any_animation_finished" },
+            { "move" : "q.ground_speed >= 0.1" },
+            { "dead": "!q.is_alive" },
+            { "celebrate": "q.is_celebrating" }
+          ],
+					"blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "move": {
+          "on_entry": [ "v.roll = math.random_integer(1, 5);" ],
+          "animations": [
+            "base_pose",
+            "move_upper_body",
+            "move_lower_body"
+          ],
+          "transitions": [
+            { "default": "(q.ground_speed == 0.0 && v.roll > 3) || (q.ground_speed == 0.0 && v.roll <= 3 && q.has_target)" },
+            { "idle": "!q.has_target && q.ground_speed == 0.0 && v.roll <= 3" },
+            { "attack": "q.is_casting" },
+            { "dead": "!q.is_alive" },
+            { "celebrate": "q.is_celebrating" }
+          ],
+          "blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "default_trans": {
+          "animations": [
+            { "default_trans1": "v.roll == 1" },
+            { "default_trans2": "v.roll == 2" }
+          ],
+          "transitions": [
+            { "default": "q.any_animation_finished || q.modified_move_speed > 0.1" },
+            { "dead": "!q.is_alive" }
+          ]
+        },
+        "attack": {
+          "on_entry": [ "v.roll = math.random_integer(1, 2);" ],
+          "animations": [
+            { "casting1": "v.roll == 1" },
+            { "casting2": "v.roll == 2" },
+            { "riding.legs": "q.is_riding" },
+            "base_pose"
+          ],
+          "particle_effects" : [
+						{ "effect" : "spell", "locator" : "left_hand" },
+						{ "effect" : "spell", "locator" : "right_hand" },
+						{ "effect" : "spell2b" }
+					],
+          "transitions": [
+            { "default_trans": "q.ground_speed == 0 && !q.is_casting" },
+            { "move": "!q.is_casting" },
+            { "dead": "!q.is_alive" }
+          ],
+					"blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "dead": {
+          "on_entry": [ "v.roll = math.random_integer(1, 4);" ],
+          "animations": [
+            { "dead1": "v.roll == 1" },
+            { "dead2": "v.roll == 2" },
+            { "dead3": "v.roll == 3" },
+            { "dead4": "v.roll == 4" }
+          ]
+        },
+        "celebrate": {
+          "animations": [ "celebrate" ],
+          "transitions": [{ "default": "!q.is_celebrating || q.any_animation_finished" }],
+					"blend_transition": 0.2,
+					"blend_via_shortest_path": true
+        }
+			}
+    },
+    "controller.animation.witch.root" : {
+			"initial_state" : "default",
+			"states" : {
+				"default" : {
+          "on_entry": [ "v.roll = math.random_integer(1, 5);" ],
+          "animations" : [
+            { "base_pose": "v.roll < 5" },
+            { "base_pose_sus": "v.roll == 5" }
+          ],
+					"transitions" : [
+            { "move" : "q.ground_speed > 0.0 && q.is_on_ground && !q.is_riding" },
+            { "dead": "!q.is_alive" }
+          ],
+					"blend_transition": 0.4,
+					"blend_via_shortest_path": true
+        },
+        "idle": {
+          "animations" : [
+            { "idle1": "v.roll == 1 && (!q.has_target || !q.facing_target_to_range_attack)" },
+            { "idle2": "v.roll == 2 && (!q.has_target || !q.facing_target_to_range_attack)" },
+            { "idle3": "v.roll == 3 && (!q.has_target || !q.facing_target_to_range_attack)" }
+          ],
+					"transitions" : [
+            { "default" : "q.has_target || q.is_in_contact_with_water || q.any_animation_finished" },
+            { "move" : "q.ground_speed >= 0.1" },
+            { "dead": "!q.is_alive" }
+          ],
+					"blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "move": {
+          "on_entry": [ "v.roll = math.random_integer(1, 5);" ],
+          "animations": [
+            "base_pose",
+            { "move_upper_body": "!q.has_target" },
+            "move_lower_body"
+          ],
+          "transitions": [
+            { "default": "(q.ground_speed == 0.0 && v.roll > 3) || (q.ground_speed == 0.0 && v.roll <= 3 && q.has_target)" },
+            { "idle": "q.ground_speed == 0.0 && v.roll <= 3 && !q.has_target" },
+            { "dead": "!q.is_alive" }
+          ],
+          "blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "dead": {
+          "on_entry": [ "v.roll = math.random_integer(1, 4);" ],
+          "animations": [
+            { "dead1": "v.roll == 1" },
+            { "dead2": "v.roll == 2" },
+            { "dead3": "v.roll == 3" },
+            { "dead4": "v.roll == 4" }
+          ]
+        }
+			}
+    },
+    "controller.animation.witch.attack": {
+      "initial_state": "default",
+      "states": {
+        "default" :  {
+					"transitions" : [
+						{ "charge" : "q.has_target && q.is_alive && v.fall == 0" }
+          ],
+          "blend_transition": 0.1,
+          "blend_via_shortest_path": true
+				},
+				"throw" : {
+          "animations": [ "throw_potion" ],
+					"transitions" : [
+            { "charge" : "q.all_animations_finished" },
+            { "default": "!q.is_alive || v.fall == 1" }
+					],
+          "blend_transition": 0.2,
+          "blend_via_shortest_path": true
+				},
+				"charge" : {
+          "animations": [ "charge_potion" ],
+					"transitions" : [
+						{ "throw" : "v.x = 0; v.y = q.target_y_rotation; for_each(t.x, q.get_nearby_entities(2, 'minecraft:splash_potion'), {(t.x -> q.life_time < 0.1 && !t.x -> q.is_on_ground) ? {v.y = t.x -> q.target_y_rotation; v.x = 1;};}); return v.x + math.trunc(q.target_y_rotation - v.y);" },
+            { "default": "!q.has_target || !q.facing_target_to_range_attack || !q.is_alive || v.fall == 1" }
+					],
+          "blend_transition": 0.1,
+          "blend_via_shortest_path": true
+				}
+      }
+    },
+    "controller.animation.skeleton.root" : {
+			"initial_state" : "default",
+			"states" : {
+				"default" : {
+          "animations" : [
+            "base_pose",
+            { "riding.legs": "q.is_riding" }
+          ],
+					"transitions" : [
+            { "move" : "q.ground_speed > 0.0 && q.is_on_ground && !q.is_riding" },
+            { "attack": "v.attack_time" },
+            { "dead": "!q.is_alive" }
+          ],
+					"blend_transition": 0.4,
+					"blend_via_shortest_path": true
+        },
+        "idle": {
+          "animations" : [
+            { "idle1": "v.roll == 1 && (!q.has_target || !q.facing_target_to_range_attack)" },
+            { "idle2": "v.roll == 2 && (!q.has_target || !q.facing_target_to_range_attack)" },
+            { "idle3": "v.roll == 3 && (!q.has_target || !q.facing_target_to_range_attack)" }
+          ],
+					"transitions" : [
+            { "default" : "q.has_target || q.is_in_contact_with_water || q.any_animation_finished" },
+            { "move" : "q.ground_speed >= 0.1" },
+            { "dead": "!q.is_alive" }
+          ],
+					"blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "move": {
+          "on_entry": [ "v.roll = math.random_integer(1, 5);" ],
+          "animations": [
+            "base_pose",
+            { "move_upper_body": "!q.has_target" },
+            "move_lower_body"
+          ],
+          "transitions": [
+            { "default": "(q.ground_speed == 0.0 && v.roll > 3) || (q.ground_speed == 0.0 && v.roll <= 3 && q.has_target)" },
+            { "idle": "!q.has_target && q.ground_speed == 0.0 && v.roll <= 3" },
+            { "attack": "v.attack_time" },
+            { "dead": "!q.is_alive" }
+          ],
+          "blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "attack": {
+          "on_entry": [ "v.attack_roll = v.attack_roll < 3 ? v.attack_roll + 1 : 1;", "v.delay = q.life_time;" ],
+          "animations": [
+            { "attack1": "v.attack_roll == 1" },
+            { "attack2": "v.attack_roll == 2" },
+            { "attack3": "v.attack_roll == 3" },
+            { "riding.legs": "q.is_riding" },
+            "move_lower_body"
+          ],
+          "transitions": [
+            { "move": "!v.attack_time && q.life_time - v.delay >= 0.5" },
+            { "dead": "!q.is_alive" }
+          ],
+					"blend_transition": 0.2,
+					"blend_via_shortest_path": true
+        },
+        "dead": {
+          "on_entry": [ "v.roll = math.random_integer(1, 3);" ],
+          "animations": [
+            { "dead1": "v.roll == 1" },
+            { "dead2": "v.roll == 2" },
+            { "dead3": "v.roll == 3" }
+          ]
+        }
+			}
+    },
+    "controller.animation.skeleton.attack": {
+      "initial_state": "default",
+      "states": {
+        "default" :  {
+					"transitions" : [
+						{ "attack" : "q.has_target && q.facing_target_to_range_attack && q.is_alive && v.fall == 0" }
+          ]
+				},
+				"hold" : {
+          "animations": [ "hold_bow" ],
+					"transitions" : [
+            { "attack" : "q.all_animations_finished" },
+            { "default": "!q.is_alive || v.fall == 1" }
+					],
+          "blend_transition": 0.2,
+          "blend_via_shortest_path": true
+				},
+				"attack" : {
+          "animations": [ "charge_bow" ],
+					"transitions" : [
+						{ "hold" : "v.x = 0; v.y = q.target_y_rotation; for_each(t.x, q.get_nearby_entities(2, 'minecraft:arrow'), {(t.x -> q.life_time < 0.1 && !t.x -> q.is_on_ground) ? {v.y = t.x -> q.target_y_rotation; v.x = 1;};}); return v.x + math.trunc(q.target_y_rotation - v.y);" },
+            { "default": "!q.has_target || !q.facing_target_to_range_attack || !q.is_alive || v.fall == 1" }
+					],
+          "blend_transition": 0.1,
+          "blend_via_shortest_path": true
+				}
+      }
+    },
+    "controller.animation.wither_skeleton.root" : {
+			"initial_state" : "default",
+			"states" : {
+				"default" : {
+          "on_entry": [ "v.roll = math.random_integer(1, 5);" ],
+          "animations" : [
+            "base_pose",
+            { "riding.legs": "q.is_riding" }
+          ],
+					"transitions" : [
+            { "move" : "q.ground_speed > 0.0 && q.is_on_ground && !q.is_riding && !q.has_target" },
+            { "move_target" : "q.ground_speed > 0.0 && q.is_on_ground && !q.is_riding && q.has_target" },
+            { "attack": "v.attack_time" },
+            { "dead": "!q.is_alive" }
+          ],
+          "on_exit": [ "v.attack_roll = math.random_integer(1, 3);" ],
+					"blend_transition": 0.2,
+					"blend_via_shortest_path": true
+        },
+        "idle": {
+          "animations" : [
+            { "idle1": "v.roll == 1" },
+            { "idle2": "v.roll == 2" },
+            { "idle3": "v.roll == 3" }
+          ],
+					"transitions" : [
+            { "default" : "q.has_target || q.is_in_contact_with_water || q.any_animation_finished" },
+            { "move" : "q.ground_speed >= 0.1" },
+            { "dead": "!q.is_alive" }
+          ],
+					"blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "default_trans": {
+          "animations" : [
+            "base_pose",
+            { "move_upper_body_target1_default": "v.attack_roll == 3" },
+            { "move_upper_body_target2_default": "v.attack_roll == 1" },
+            { "move_upper_body_target3_default": "v.attack_roll == 2" }
+          ],
+					"transitions" : [
+            { "default" : "q.any_animation_finished" }
+          ],
+          "blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "move": {
+          "on_entry": [ "v.roll = math.random_integer(1, 5);" ],
+          "animations": [
+            "base_pose",
+            "move_upper_body",
+            "move_lower_body"
+          ],
+          "transitions": [
+            { "default": "(q.ground_speed == 0.0 && v.roll > 3) || (q.ground_speed == 0.0 && v.roll <= 3 && q.has_target)" },
+            { "idle": "!q.has_target && q.ground_speed == 0.0 && v.roll <= 3" },
+            { "move_target": "q.has_target" },
+            { "attack": "v.attack_time" },
+            { "dead": "!q.is_alive" }
+          ],
+          "blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "move_target": {
+          "on_entry": [ "v.delay = q.life_time;" ],
+          "animations": [
+            { "move_upper_body_target1": "v.attack_roll == 3" },
+            { "move_upper_body_target2": "v.attack_roll == 1" },
+            { "move_upper_body_target3": "v.attack_roll == 2" },
+            "move_lower_body"
+          ],
+          "transitions": [
+            { "default_trans": "q.life_time - v.delay >= 1.2 && !q.has_target" },
+            { "attack": "v.attack_time" },
+            { "dead": "!q.is_alive" }
+          ]
+        },
+        "attack": {
+          "on_entry": [ "v.attack_roll = v.attack_roll < 3 ? v.attack_roll + 1 : 1;", "v.delay = q.life_time;" ],
+          "animations": [
+            { "attack1": "v.attack_roll == 1" },
+            { "attack2": "v.attack_roll == 2" },
+            { "attack3": "v.attack_roll == 3" },
+            { "riding.legs": "q.is_riding" },
+            "move_lower_body"
+          ],
+          "transitions": [
+            { "move_target": "!v.attack_time && q.life_time - v.delay >= 0.5" },
+            { "dead": "!q.is_alive" }
+          ],
+					"blend_transition": 0.2,
+					"blend_via_shortest_path": true
+        },
+        "dead": {
+          "on_entry": [ "v.roll = math.random_integer(1, 3);" ],
+          "animations": [
+            { "dead1": "v.roll == 1" },
+            { "dead2": "v.roll == 2" },
+            { "dead3": "v.roll == 3" }
+          ]
+        }
+			}
+    },
+    "controller.animation.iron_golem.root" : {
+			"initial_state" : "default",
+			"states" : {
+				"default" : {
+          "on_entry": [ "v.roll = math.random_integer(1, 5);" ],
+          "animations" : [
+            { "base_pose": "v.roll < 5" },
+            { "base_pose_sus": "v.roll == 5" }
+          ],
+					"transitions" : [
+            { "move" : "q.ground_speed > 0.0 && q.is_on_ground && !q.is_riding" },
+            { "attack": "v.attack_animation_tick > 0.0" },
+            { "offer_flower": "v.offer_flower_tick > 0.0" },
+            { "dead": "!q.is_alive" }
+          ],
+					"blend_transition": 0.4,
+					"blend_via_shortest_path": true
+        },
+        "idle": {
+          "animations" : [
+            { "idle1": "v.roll == 1" },
+            { "idle2": "v.roll == 2" },
+            { "idle3": "v.roll == 3" }
+          ],
+					"transitions" : [
+            { "default" : "q.has_target || q.is_in_contact_with_water || q.any_animation_finished" },
+            { "move" : "q.ground_speed >= 0.1" },
+            { "dead": "!q.is_alive" }
+          ],
+					"blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "move": {
+          "on_entry": [ "v.roll = math.random_integer(1, 5);" ],
+          "animations": [
+            "base_pose",
+            "move_upper_body",
+            "move_lower_body"
+          ],
+          "transitions": [
+            { "default": "(q.ground_speed == 0.0 && v.roll > 3) || (q.ground_speed == 0.0 && v.roll <= 3 && q.has_target)" },
+            { "idle": "!q.has_target && q.ground_speed == 0.0 && v.roll <= 3" },
+            { "offer_flower": "v.offer_flower_tick > 0.0" },
+            { "attack": "v.attack_animation_tick > 0.0" },
+            { "dead": "!q.is_alive" }
+          ],
+          "blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "attack": {
+          "on_entry": [ "v.roll = math.random_integer(1, 3);" ],
+          "animations": [
+            { "attack1": "v.roll == 1" },
+            { "attack2": "v.roll == 2" },
+            { "attack3": "v.roll == 3" },
+            "base_pose",
+            "move_lower_body"
+          ],
+          "transitions": [
+            { "default": "q.ground_speed == 0 && q.any_animation_finished" },
+            { "move": "q.ground_speed > 0 && q.any_animation_finished" }
+          ],
+					"blend_transition": 0.2,
+					"blend_via_shortest_path": true
+        },
+        "offer_flower": {
+          "animations": [ "offer_flower" ],
+          "transitions": [
+            { "default": "q.all_animations_finished || v.offer_flower_tick <= 0.0" }
+          ]
+        },
+        "dead": {
+          "on_entry": [ "v.roll = math.random_integer(1, 3);" ],
+          "animations": [
+            { "dead1": "v.roll == 1" },
+            { "dead2": "v.roll == 2" },
+            { "dead3": "v.roll == 3" }
+          ]
+        }
+			}
+    },
+    "controller.animation.piglin.root" : {
+			"initial_state" : "default",
+			"states" : {
+				"default" : {
+          "on_entry": [ "v.attack_roll = 0; v.roll = math.random_integer(1, 5);" ],
+          "animations" : [
+            { "base_pose": "v.roll < 5" },
+            { "base_pose_sus": "v.roll == 5" },
+            { "riding.legs": "q.is_riding" }
+          ],
+					"transitions" : [
+            { "move" : "q.ground_speed > 0.0 && q.is_on_ground && !q.is_riding" },
+            { "attack": "v.attack_time" },
+            { "dead": "!q.is_alive" },
+            { "celebrate": "q.is_celebrating" }
+          ],
+					"blend_transition": 0.4,
+					"blend_via_shortest_path": true
+        },
+        "idle": {
+          "animations" : [
+            { "idle1": "v.roll == 1" },
+            { "idle2": "v.roll == 2" },
+            { "idle3": "v.roll == 3" }
+          ],
+					"transitions" : [
+            { "default" : "q.has_target || q.is_in_contact_with_water || q.any_animation_finished" },
+            { "move" : "q.ground_speed >= 0.1" },
+            { "dead": "!q.is_alive" },
+            { "celebrate": "q.is_celebrating" }
+          ],
+					"blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "move": {
+          "on_entry": [ "v.roll = math.random_integer(1, 5);" ],
+          "animations": [
+            { "base_pose": "v.attack_state == 0" },
+            { "move_upper_body": "v.attack_state == 0" },
+            "move_lower_body"
+          ],
+          "transitions": [
+            { "default": "(q.ground_speed == 0.0 && v.roll > 3) || (q.ground_speed == 0.0 && v.roll <= 3 && q.has_target)" },
+            { "idle": "!q.has_target && q.ground_speed == 0.0 && v.roll <= 3" },
+            { "attack": "v.attack_time" },
+            { "dead": "!q.is_alive" },
+            { "celebrate": "q.is_celebrating" }
+          ],
+          "blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "move_target": {
+          "animations": [
+            "base_pose",
+            { "move_upper_body_target1": "v.attack_roll == 3" },
+            { "move_upper_body_target2": "v.attack_roll == 1" },
+            { "move_upper_body_target3": "v.attack_roll == 2" },
+            "move_lower_body"
+          ],
+          "transitions": [
+            { "default": "!q.has_target" },
+            { "attack": "v.attack_time" },
+            { "dead": "!q.is_alive" },
+            { "celebrate": "q.is_celebrating" }
+          ]
+        },
+        "attack": {
+          "on_entry": [ "v.attack_roll = v.attack_roll < 3 ? v.attack_roll + 1 : 1;", "v.delay = q.life_time;" ],
+          "animations": [
+            { "attack1": "v.attack_roll == 1" },
+            { "attack2": "v.attack_roll == 2" },
+            { "attack3": "v.attack_roll == 3" },
+            { "riding.legs": "q.is_riding" },
+            "base_pose",
+            "move_lower_body"
+          ],
+          "transitions": [
+            { "move": "q.life_time - v.delay >= 0.5 && !q.has_target" },
+            { "move_target": "q.life_time - v.delay >= 0.5 && q.has_target" },
+            { "dead": "!q.is_alive" }
+          ],
+					"blend_transition": 0.2,
+					"blend_via_shortest_path": true
+        },
+        "dead": {
+          "on_entry": [ "v.roll = math.random_integer(1, 4);" ],
+          "animations": [
+            { "dead1": "v.roll == 1" },
+            { "dead2": "v.roll == 2" },
+            { "dead3": "v.roll == 3" },
+            { "dead4": "v.roll == 4" }
+          ]
+        },
+        "celebrate": {
+          "on_entry": [ "v.roll = math.random_integer(1, 3);" ],
+          "animations": [
+            { "celebrate1": "v.roll == 1" },
+            { "celebrate2": "v.roll == 2" },
+            { "celebrate3": "v.roll == 3" }
+          ],
+          "transitions": [{ "default": "!q.is_celebrating || q.any_animation_finished" }],
+					"blend_transition": 0.2,
+					"blend_via_shortest_path": true
+        }
+			}
+    },
+    "controller.animation.piglin.attack": {
+      "initial_state": "default",
+      "states": {
+        "default": {
+          "transitions": [
+            { "hold": "v.attack_state == 1 && q.is_alive" },
+            { "charge": "v.attack_state == 2 && q.is_alive" }
+          ],
+					"blend_transition": 0.2,
+					"blend_via_shortest_path": true
+        },
+        "charge": {
+          "animations": [ "crossbow_charge" ],
+          "transitions": [
+            { "default": "v.attack_state == 0 || !q.is_alive" },
+            { "hold": "v.attack_state == 1" }
+          ],
+					"blend_transition": 0.2,
+					"blend_via_shortest_path": true
+        },
+        "hold": {
+          "animations": [ "crossbow_hold" ],
+          "transitions": [
+            { "default": "v.attack_state == 0 || !q.is_alive" },
+            { "charge": "v.attack_state == 2" }
+          ],
+					"blend_transition": 0.2,
+					"blend_via_shortest_path": true
+        }
+      }
+    },
+    "controller.animation.pigman.root" : {
+			"initial_state" : "default",
+			"states" : {
+				"default" : {
+          "on_entry": [ "v.attack_roll = 0; v.roll = math.random_integer(1, 5);" ],
+          "animations" : [
+            "base_pose",
+            { "riding.legs": "q.is_riding" }
+          ],
+					"transitions" : [
+            { "move" : "q.ground_speed > 0.0 && q.is_on_ground && !q.is_riding" },
+            { "attack": "v.attack_time" },
+            { "dead": "!q.is_alive" }
+          ],
+					"blend_transition": 0.4,
+					"blend_via_shortest_path": true
+        },
+        "idle": {
+          "animations" : [
+            { "idle1": "v.roll == 1" },
+            { "idle2": "v.roll == 2" },
+            { "idle3": "v.roll == 3" }
+          ],
+					"transitions" : [
+            { "default" : "q.has_target || q.is_in_contact_with_water || q.any_animation_finished" },
+            { "move" : "q.ground_speed >= 0.1" },
+            { "dead": "!q.is_alive" }
+          ],
+					"blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "move": {
+          "on_entry": [ "v.roll = math.random_integer(1, 5);" ],
+          "animations": [
+            "base_pose",
+            "move_upper_body",
+            "move_lower_body"
+          ],
+          "transitions": [
+            { "default": "(q.ground_speed == 0.0 && v.roll > 3) || (q.ground_speed == 0.0 && v.roll <= 3 && q.has_target)" },
+            { "idle": "!q.has_target && q.ground_speed == 0.0 && v.roll <= 3" },
+            { "attack": "v.attack_time" },
+            { "dead": "!q.is_alive" }
+          ],
+          "blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "move_target": {
+          "animations": [
+            "base_pose",
+            "move_upper_body",
+            { "move_upper_body_target1": "v.attack_roll == 3" },
+            { "move_upper_body_target2": "v.attack_roll == 1" },
+            { "move_upper_body_target3": "v.attack_roll == 2" },
+            "move_lower_body"
+          ],
+          "transitions": [
+            { "default": "!q.has_target" },
+            { "attack": "v.attack_time" },
+            { "dead": "!q.is_alive" }
+          ]
+        },
+        "attack": {
+          "on_entry": [ "v.attack_roll = v.attack_roll < 3 ? v.attack_roll + 1 : 1;", "v.delay = q.life_time;" ],
+          "animations": [
+            { "attack1": "v.attack_roll == 1" },
+            { "attack2": "v.attack_roll == 2" },
+            { "attack3": "v.attack_roll == 3" },
+            { "riding.legs": "q.is_riding" },
+            "base_pose",
+            "move_lower_body"
+          ],
+          "transitions": [
+            { "move": "q.life_time - v.delay >= 0.5 && !q.has_target" },
+            { "move_target": "q.life_time - v.delay >= 0.5 && q.has_target" },
+            { "dead": "!q.is_alive" }
+          ],
+					"blend_transition": 0.2,
+					"blend_via_shortest_path": true
+        },
+        "dead": {
+          "on_entry": [ "v.roll = math.random_integer(1, 4);" ],
+          "animations": [
+            { "dead1": "v.roll == 1" },
+            { "dead2": "v.roll == 2" },
+            { "dead3": "v.roll == 3" },
+            { "dead4": "v.roll == 4" }
+          ]
+        }
+			}
+    },
+    "controller.animation.enderman.root" : {
+			"initial_state" : "default",
+			"states" : {
+				"default" : {
+          "on_entry": [ "v.attack_roll = 0; v.roll = math.random_integer(1, 5);" ],
+          "animations" : [
+            "base_pose"
+          ],
+					"transitions" : [
+            { "move" : "q.ground_speed > 0.0 && q.is_on_ground && !q.is_riding" },
+            { "attack": "v.attack_time" },
+            { "dead": "!q.is_alive" }
+          ],
+					"blend_transition": 0.4,
+					"blend_via_shortest_path": true
+        },
+        "idle": {
+          "animations" : [
+            { "idle1": "v.roll == 1" },
+            { "idle2": "v.roll == 2" },
+            { "idle3": "v.roll == 3" }
+          ],
+					"transitions" : [
+            { "default" : "q.has_target || q.is_in_contact_with_water || q.any_animation_finished" },
+            { "move" : "q.ground_speed >= 0.1" },
+            { "dead": "!q.is_alive" }
+          ],
+					"blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "move": {
+          "on_entry": [ "v.roll = math.random_integer(1, 5);" ],
+          "animations": [
+            "base_pose",
+            "move_upper_body",
+            "move_lower_body"
+          ],
+          "transitions": [
+            { "default": "(q.ground_speed == 0.0 && v.roll > 3) || (q.ground_speed == 0.0 && v.roll <= 3 && q.has_target)" },
+            { "idle": "!q.has_target && q.ground_speed == 0.0 && v.roll <= 3" },
+            { "attack": "v.attack_time" },
+            { "dead": "!q.is_alive" }
+          ],
+          "blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "move_target": {
+          "animations": [
+            { "move_upper_body_target1": "v.attack_roll == 3 && !q.is_carrying_block" },
+            { "move_upper_body_target2": "v.attack_roll == 1 && !q.is_carrying_block" },
+            { "move_upper_body_target3": "v.attack_roll == 2 && !q.is_carrying_block" },
+            "move_lower_body"
+          ],
+          "transitions": [
+            { "default": "!q.has_target" },
+            { "attack": "v.attack_time" },
+            { "dead": "!q.is_alive" }
+          ]
+        },
+        "attack": {
+          "on_entry": [ "v.attack_roll = v.attack_roll < 3 ? v.attack_roll + 1 : 1;", "v.delay = q.life_time;" ],
+          "animations": [
+            { "attack1": "v.attack_roll == 1 && !q.is_carrying_block" },
+            { "attack2": "v.attack_roll == 2 && !q.is_carrying_block" },
+            { "attack3": "v.attack_roll == 3 && !q.is_carrying_block" },
+            { "attack4": "v.attack_roll == 1 && q.is_carrying_block" },
+            { "attack5": "v.attack_roll != 1 && q.is_carrying_block" },
+            "base_pose",
+            "move_lower_body"
+          ],
+          "transitions": [
+            { "move": "q.life_time - v.delay >= 0.5 && !q.has_target" },
+            { "move_target": "q.life_time - v.delay >= 0.5 && q.has_target" },
+            { "dead": "!q.is_alive" }
+          ],
+					"blend_transition": 0.2,
+					"blend_via_shortest_path": true
+        },
+        "dead": {
+          "on_entry": [ "v.roll = math.random_integer(1, 4);" ],
+          "animations": [
+            { "dead1": "v.roll == 1" },
+            { "dead2": "v.roll == 2" },
+            { "dead3": "v.roll == 3" },
+            { "dead4": "v.roll == 4" }
+          ]
+        }
+			}
+    },
+    "controller.animation.enderman.teleporting": {
+      "initial_state": "default",
+      "states": {
+        "default": {
+          "on_entry": [
+            "v.posx = q.position(0);",
+            "v.posz = q.position(2);"
+          ],
+          "transitions": [
+            { "default": "q.ground_speed > 0.0" },
+            { "teleport": "(math.sqrt(math.abs(q.position(0) - v.posx) * math.abs(q.position(0) - v.posx) + math.abs(q.position(2) - v.posz) * math.abs(q.position(2) - v.posz)) > 1 && q.ground_speed == 0.0)" }
+          ]
+        },
+        "teleport": {
+          "animations": [ "warp" ],
+          "transitions": [
+            { "default": "q.all_animations_finished" }
+          ]
+        }
+      }
+    },
+    "controller.animation.vex.root" : {
+			"initial_state" : "default",
+			"states" : {
+				"default" : {
+          "on_entry": [ "v.roll = math.random_integer(1, 5);" ],
+          "animations" : [
+            "base_pose",
+            { "riding.legs": "q.is_riding" }
+          ],
+					"transitions" : [
+            { "move" : "q.modified_move_speed > 0.2 && !q.is_riding && !q.has_target" },
+            { "move_target" : "q.modified_move_speed > 0.2 && !q.is_riding && q.has_target" },
+            { "attack": "v.attack_time" },
+            { "dead": "!q.is_alive" }
+          ],
+          "on_exit": [ "v.attack_roll = math.random_integer(1, 3);" ],
+					"blend_transition": 0.2,
+					"blend_via_shortest_path": true
+        },
+        "default_trans": {
+          "animations" : [
+            "base_pose",
+            { "move_upper_body_target1_default": "v.attack_roll == 3" },
+            { "move_upper_body_target2_default": "v.attack_roll == 1" },
+            { "move_upper_body_target3_default": "v.attack_roll == 2" }
+          ],
+					"transitions" : [
+            { "default" : "q.any_animation_finished" }
+          ],
+          "blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "move": {
+          "on_entry": [ "v.roll = math.random_integer(1, 5);" ],
+          "animations": [
+            "base_pose",
+            "move_upper_body",
+            "move_lower_body"
+          ],
+          "transitions": [
+            { "default": "(q.modified_move_speed < 0.2 && v.roll > 3) || (q.modified_move_speed < 0.2 && v.roll <= 3 && q.has_target)" },
+            { "move_target": "q.has_target" },
+            { "dead": "!q.is_alive" }
+          ],
+          "blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "move_target": {
+          "on_entry": [ "v.delay = q.life_time;" ],
+          "animations": [
+            "base_pose",
+            "move_upper_body",
+            "move_lower_body",
+            { "move_upper_body_target1": "v.attack_roll == 3" },
+            { "move_upper_body_target2": "v.attack_roll == 1" },
+            { "move_upper_body_target3": "v.attack_roll == 2" }
+          ],
+          "transitions": [
+            { "default_trans": "q.life_time - v.delay >= 1.2 && !q.has_target" },
+            { "attack": "v.attack_time" },
+            { "dead": "!q.is_alive" }
+          ],
+          "blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "attack": {
+          "on_entry": [ "v.attack_roll = v.attack_roll < 3 ? v.attack_roll + 1 : 1;", "v.delay = q.life_time;" ],
+          "animations": [
+            "base_pose",
+            "move_upper_body",
+            "move_lower_body",
+            { "attack1": "v.attack_roll == 1" },
+            { "attack2": "v.attack_roll == 2" },
+            { "attack3": "v.attack_roll == 3" },
+            { "riding.legs": "q.is_riding" }
+          ],
+          "transitions": [
+            { "move_target": "!v.attack_time && q.life_time - v.delay >= 0.5" },
+            { "dead": "!q.is_alive" }
+          ],
+					"blend_transition": 0.2,
+					"blend_via_shortest_path": true
+        },
+        "dead": {
+          "on_entry": [ "v.roll = math.random_integer(1, 2);" ],
+          "animations": [
+            { "dead1": "v.roll == 1" },
+            { "dead2": "v.roll == 2" }
+          ]
+        }
+			}
+    }
+	}
+}

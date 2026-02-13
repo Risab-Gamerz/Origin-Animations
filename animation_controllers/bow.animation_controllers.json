@@ -1,0 +1,23 @@
+{
+  "format_version": "1.10.0",
+  "animation_controllers": {
+    "controller.animation.bow.shoot": {
+      "initial_state": "default",
+      "states": {
+        "default" :  {
+					"transitions" : [
+						{ "attack" : "q.has_target && q.facing_target_to_range_attack && q.is_alive" }
+          ]
+				},
+				"attack" : {
+          "animations": [ "charge_bow" ],
+					"transitions" : [
+						{ "default" : "v.x = 0; v.y = q.target_y_rotation; for_each(t.x, q.get_nearby_entities(2, 'minecraft:arrow'), {(t.x -> q.life_time < 0.1 && !t.x -> q.is_on_ground) ? {v.y = t.x -> q.target_y_rotation; v.x = 1;};}); return v.x + math.trunc(q.target_y_rotation - v.y);" },
+            { "default": "!q.has_target || !q.facing_target_to_range_attack || !q.is_alive" }
+          ],
+          "on_exit": [ "v.bow_frame = 0;" ]
+				}
+      }
+    }
+  }
+}

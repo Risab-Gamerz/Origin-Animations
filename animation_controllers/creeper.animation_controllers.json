@@ -1,0 +1,71 @@
+{
+	"format_version": "1.10.0",
+	"animation_controllers": {
+		"controller.animation.creeper.root" : {
+			"initial_state" : "default",
+			"states" : {
+				"default" : {
+          "animations" : [
+            "base_pose",
+            "look_at_target"
+          ],
+					"transitions" : [
+            { "move" : "q.ground_speed > 0.0 && q.is_on_ground && !q.is_riding" },
+            { "exploding": "q.is_ignited" },
+            { "dead": "!q.is_alive" }
+          ],
+          "blend_transition": 0.4,
+					"blend_via_shortest_path": true
+        },
+        "idle": {
+          "animations" : [
+            { "idle1": "v.roll == 1" },
+            { "idle2": "v.roll == 2" },
+            { "idle3": "v.roll == 3" }
+          ],
+					"transitions" : [
+            { "default" : "q.is_in_contact_with_water || q.any_animation_finished || q.has_target" },
+            { "move" : "q.ground_speed >= 0.1" },
+            { "dead": "!q.is_alive" }
+          ],
+          "blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "move": {
+          "on_entry": [ "v.roll = math.random_integer(1, 5);" ],
+          "animations": [
+            "base_pose",
+            { "move_upper_body": "!q.is_avoiding_mobs" },
+            "move_lower_body",
+            "look_at_target"
+          ],
+          "transitions": [
+            { "default": "(q.ground_speed == 0.0 && v.roll > 3) || (q.ground_speed == 0.0 && v.roll <= 3 && q.has_target)" },
+            { "idle": "!q.has_target && q.ground_speed == 0.0 && v.roll <= 3" },
+            { "exploding": "q.is_ignited" },
+            { "dead": "!q.is_alive" }
+          ],
+          "blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "exploding": {
+          "animations": [ "exploding" ],
+          "transitions": [
+            { "default": "!q.is_ignited" },
+            { "dead": "!q.is_alive" }
+          ],
+          "blend_transition": 0.1,
+					"blend_via_shortest_path": true
+        },
+        "dead": {
+          "on_entry": [ "v.roll = math.random_integer(1, 3);" ],
+          "animations": [
+            { "dead1": "v.roll == 1" },
+            { "dead2": "v.roll == 2" },
+            { "dead3": "v.roll == 3" }
+          ]
+        }
+			}
+    }
+	}
+}
