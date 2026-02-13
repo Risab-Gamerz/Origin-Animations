@@ -1,0 +1,21 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.player.riding_horse": {
+			"loop": true,
+			"bones": {
+				"root": {
+					"position": [0, "math.lerp(-0.3, 0.3, q.get_ride -> v.tcos2 * 0.03)", 0]
+				}
+			}
+		},
+		"animation.player.riding_pig": {
+			"loop": true,
+			"bones": {
+				"root": {
+					"position": [0, "math.lerp(-0.3, 0.3, q.get_ride -> v.tcos1 * 0.01)", 0]
+				}
+			}
+		}
+	}
+}

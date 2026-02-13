@@ -1,0 +1,15 @@
+{
+  "format_version": "1.10.0",
+  "animations": {
+    "animation.bow.charge_bow": {
+      "animation_length": 0.75,
+      "loop": "hold_on_last_frame",
+      "timeline": {
+        "0.0": [ "v.bow_frame = 0;" ],
+        "0.25": [ "v.bow_frame = 1;" ],
+        "0.5": [ "v.bow_frame = 2;" ],
+        "0.75": [ "v.bow_frame = 3;" ]
+      }
+    }
+  }
+}

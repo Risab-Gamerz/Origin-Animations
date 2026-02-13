@@ -1,0 +1,179 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.zombie_piglin.attack1": {
+			"loop": "hold_on_last_frame",
+			"animation_length": 0.5,
+			"anim_time_update": "query.anim_time + query.delta_time * 1.0",
+			"bones": {
+				"rightarm": {
+					"rotation": {
+						"0.1": [-130.21325, 33.90628, -46.21889],
+						"0.2": [-25, -30, 0],
+						"0.3": [-6.24, -25.5, 0.16],
+						"0.4": [-1.73, -11.08, 0.08],
+						"0.5": [0, 0, 0]
+					}
+				},
+				"leftarm": {
+					"rotation": {
+						"0.1": [0, 0, 0],
+						"0.2": [35.76976, -8.25543, -21.70516],
+						"0.5": [0, 0, 0]
+					}
+				},
+				"waist": {
+					"rotation": {
+						"0.1": [-7.5, 0, 0],
+						"0.2": [40, 0, 0],
+						"0.5": [0, 0, 0]
+					}
+				},
+				"eyelids": {
+					"scale": 0
+				}
+			}
+		},
+		"animation.zombie_piglin.move_upper_body_target1": {
+			"loop": "hold_on_last_frame",
+			"animation_length": 0.1,
+			"anim_time_update": "query.anim_time + query.delta_time * 1.0",
+			"bones": {
+				"rightarm": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"0.1": [-130.21325, 33.90628, -46.21889]
+					}
+				},
+				"waist": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"0.1": [-7.5, 0, 0]
+					}
+				},
+				"eyelids": {
+					"scale": 0
+				}
+			}
+		},
+		"animation.zombie_piglin.attack2": {
+			"loop": "hold_on_last_frame",
+			"animation_length": 0.5,
+			"anim_time_update": "query.anim_time + query.delta_time * 1.0",
+			"bones": {
+				"rightarm": {
+					"rotation": {
+						"0.1": [-25, -30, 0],
+						"0.2": [-129.23412, -15.74419, 12.49325],
+						"0.3": [-25.29, 28.2, 64.51],
+						"0.4": [-12.64, 14.1, 32.26],
+						"0.5": [0, 0, 0]
+					}
+				},
+				"waist": {
+					"rotation": {
+						"0.1": [40, 0, 0],
+						"0.2": [-7.5, 0, 0],
+						"0.5": [0, 0, 0]
+					}
+				},
+				"eyelids": {
+					"scale": 0
+				}
+			}
+		},
+		"animation.zombie_piglin.move_upper_body_target2": {
+			"loop": "hold_on_last_frame",
+			"animation_length": 0.1,
+			"anim_time_update": "query.anim_time + query.delta_time * 1.0",
+			"bones": {
+				"rightarm": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"0.1": [-25, -30, 0]
+					}
+				},
+				"waist": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"0.1": [40, 0, 0]
+					}
+				},
+				"eyelids": {
+					"scale": 0
+				}
+			}
+		},
+		"animation.zombie_piglin.attack3": {
+			"loop": "hold_on_last_frame",
+			"animation_length": 0.5,
+			"anim_time_update": "query.anim_time + query.delta_time * 1.0",
+			"bones": {
+				"rightarm": {
+					"rotation": {
+						"0.1": [-129.25814, -23.27211, -1.11613],
+						"0.2": [-25, -30, 0],
+						"0.4": [-8.33, -10, 0],
+						"0.5": [0, 0, 0]
+					}
+				},
+				"leftarm": {
+					"rotation": {
+						"0.1": [-68.26, 19.95, -35.23],
+						"0.2": [-26.49, 26.33, 14.93],
+						"0.4": [-8.83, 8.78, 4.98],
+						"0.5": [0, 0, 0]
+					},
+					"position": {
+						"0.1": [-1, 0, 0],
+						"0.2": [-2, 0, 0],
+						"0.4": [-0.67, 0, 0],
+						"0.5": [0, 0, 0]
+					}
+				},
+				"waist": {
+					"rotation": {
+						"0.1": [7.18103, 57.21432, -6.38919],
+						"0.2": [40, 0, 0],
+						"0.5": [0, 0, 0]
+					}
+				},
+				"eyelids": {
+					"scale": 0
+				}
+			}
+		},
+		"animation.zombie_piglin.move_upper_body_target3": {
+			"loop": "hold_on_last_frame",
+			"animation_length": 0.1,
+			"anim_time_update": "query.anim_time + query.delta_time * 1.0",
+			"bones": {
+				"rightarm": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"0.1": [-129.25814, -23.27211, -1.11613]
+					}
+				},
+				"leftarm": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"0.1": [-68.26, 19.95, -35.23]
+					},
+					"position": {
+						"0.0": [0, 0, 0],
+						"0.1": [-1, 0, 0]
+					}
+				},
+				"waist": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"0.1": [7.18103, 57.21432, -6.38919]
+					}
+				},
+				"eyelids": {
+					"scale": 0
+				}
+			}
+		}
+	}
+}
