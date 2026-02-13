@@ -1,0 +1,45 @@
+{
+  "format_version": "1.8.0",
+  "render_controllers": {
+    "controller.render.shulker": {
+      "arrays": {
+        "textures": {
+          "Array.variants": [
+            "Texture.black",
+            "Texture.red",
+            "Texture.green",
+            "Texture.brown",
+            "Texture.blue",
+            "Texture.purple",
+            "Texture.cyan",
+            "Texture.silver",
+            "Texture.gray",
+            "Texture.pink",
+            "Texture.lime",
+            "Texture.yellow",
+            "Texture.light_blue",
+            "Texture.magenta",
+            "Texture.orange",
+            "Texture.white",
+            "Texture.undyed"
+          ]
+        }
+      },
+      "geometry": "Geometry.default",
+      "materials": [ { "*": "Material.default" } ],
+      "textures": [ "Array.variants[query.variant]" ],
+      "is_hurt_color": {
+        "r": "q.is_alive ? 1 : 0",
+        "g": "q.is_alive ? 0 : 0",
+        "b": "q.is_alive ? 0 : 0",
+        "a": "q.is_alive ? 0.6 : 0"
+      },
+      "on_fire_color": {
+        "r": "q.is_alive ? 1 : 0",
+        "g": "q.is_alive ? 0 : 0",
+        "b": "q.is_alive ? 0 : 0",
+        "a": "q.is_alive ? 0.6 : 0"
+      }
+    }
+  }
+}

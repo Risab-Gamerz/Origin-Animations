@@ -1,0 +1,22 @@
+{
+  "format_version": "1.10.0",
+  "render_controllers": {
+    "controller.render.guardian": {
+      "geometry": "Geometry.default",
+      "materials": [ { "*": "query.is_ghost ? Material.ghost : Material.default" } ],
+      "textures": [ "query.is_elder ? Texture.elder : Texture.default" ],
+      "is_hurt_color": {
+        "r": "q.is_alive ? 1 : 0",
+        "g": "q.is_alive ? 0 : 0",
+        "b": "q.is_alive ? 0 : 0",
+        "a": "q.is_alive ? 0.6 : 0"
+      },
+      "on_fire_color": {
+        "r": "q.is_alive ? 1 : 0",
+        "g": "q.is_alive ? 0 : 0",
+        "b": "q.is_alive ? 0 : 0",
+        "a": "q.is_alive ? 0.6 : 0"
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "format_version": "1.8.0",
+  "render_controllers": {
+    "controller.render.chicken": {
+      "geometry": "geometry.default",
+      "materials": [
+        { "*": "Material.default" },
+        { "*leg": "Material.legs" }
+      ],
+      "textures": [ "texture.default" ],
+      "is_hurt_color": {
+        "r": "q.is_alive ? 1 : 0",
+        "g": "q.is_alive ? 0 : 0",
+        "b": "q.is_alive ? 0 : 0",
+        "a": "q.is_alive ? 0.6 : 0"
+      },
+      "on_fire_color": {
+        "r": "q.is_alive ? 1 : 0",
+        "g": "q.is_alive ? 0 : 0",
+        "b": "q.is_alive ? 0 : 0",
+        "a": "q.is_alive ? 0.6 : 0"
+      }
+    }
+  }
+}

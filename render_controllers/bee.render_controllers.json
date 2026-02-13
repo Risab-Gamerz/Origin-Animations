@@ -1,0 +1,32 @@
+{
+    "format_version": "1.8.0",
+    "render_controllers": {
+      "controller.render.bee": {
+        "arrays": {
+            "textures": {
+              "array.skins": [
+                "texture.default",
+                "texture.nectar",
+                "texture.angry",
+                "texture.angry_nectar"
+              ]
+            }
+        },
+        "geometry": "Geometry.default",
+        "materials": [ { "*": "Material.default" } ],
+        "textures": [ "array.skins[query.is_powered + query.is_angry * 2]" ],
+        "is_hurt_color": {
+          "r": "q.is_alive ? 1 : 0",
+          "g": "q.is_alive ? 0 : 0",
+          "b": "q.is_alive ? 0 : 0",
+          "a": "q.is_alive ? 0.6 : 0"
+        },
+        "on_fire_color": {
+          "r": "q.is_alive ? 1 : 0",
+          "g": "q.is_alive ? 0 : 0",
+          "b": "q.is_alive ? 0 : 0",
+          "a": "q.is_alive ? 0.6 : 0"
+        }
+      }
+    }
+  }

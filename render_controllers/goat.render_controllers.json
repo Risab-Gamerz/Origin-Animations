@@ -1,0 +1,27 @@
+{
+	"format_version": "1.8.0",
+	"render_controllers": {
+		"controller.render.goat": {
+			"geometry": "Geometry.default",
+			"part_visibility": [
+				{ "right_horn": "variable.goat_has_right_horn" },
+				{ "left_horn": "variable.goat_has_left_horn" }
+			],
+			"materials": [ { "*": "Material.default" } ],
+			"textures": [ "Texture.default" ],
+			"is_hurt_color": {
+			  "r": "q.is_alive ? 1 : 0",
+			  "g": "q.is_alive ? 0 : 0",
+			  "b": "q.is_alive ? 0 : 0",
+			  "a": "q.is_alive ? 0.6 : 0"
+			},
+			"on_fire_color": {
+			  "r": "q.is_alive ? 1 : 0",
+			  "g": "q.is_alive ? 0 : 0",
+			  "b": "q.is_alive ? 0 : 0",
+			  "a": "q.is_alive ? 0.6 : 0"
+			}
+		}
+	}
+  }
+  
