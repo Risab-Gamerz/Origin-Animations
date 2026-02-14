@@ -1,6 +1,6 @@
 {
 	"format_version": "1.10.0",
-	"geometry.spider.v1.8": {
+	"geometry.spiderr": {
 		"texturewidth": 64,
 		"textureheight": 32,
 		"visible_bounds_width": 4,
@@ -25,7 +25,7 @@
 			{
 				"name": "body1",
 				"parent": "body0",
-				"pivot": [0, 9, 9],
+				"pivot": [0, 9, 4],
 				"cubes": [
 					{"origin": [-5, 5, 3], "size": [10, 8, 12], "uv": [0, 12]}
 				]
